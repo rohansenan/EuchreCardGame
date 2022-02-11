@@ -49,6 +49,20 @@ static string find_left_bower(const string &trump)
     return left_bower;
 }
 
+static int rank_value(const string &rank)
+{
+    int value = -1;
+    for (int i = 0; i < NUM_RANKS; i++)
+    {
+        if (rank == RANK_NAMES_BY_WEIGHT[i])
+        {
+            value = i;
+        }
+    }
+    assert(value != -1);
+    return value;
+}
+
 Card::Card()
 : rank(RANK_TWO), suit(SUIT_SPADES) {}
 
@@ -122,6 +136,90 @@ bool Card::is_trump(const string &trump) const
         return true;
     }
     else 
+    {
+        return false;
+    }
+}
+
+bool operator<(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value < rhs_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool operator<=(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value <= rhs_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool operator>(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value > rhs_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool operator>=(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value >= rhs_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool operator==(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value == rhs_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool operator!=(const Card &lhs, const Card &rhs)
+{
+    int lhs_value = rank_value(lhs.get_rank());
+    int rhs_value = rank_value(rhs.get_rank());
+    if (lhs_value != rhs_value)
+    {
+        return true;
+    }
+    else
     {
         return false;
     }

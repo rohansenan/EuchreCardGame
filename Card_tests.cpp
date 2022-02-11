@@ -13,6 +13,9 @@ TEST(test_card_ctor) {
     ASSERT_EQUAL(Card::SUIT_HEARTS, c.get_suit());
 }
 
+
+
+// Add more test cases here
 TEST(test_card_get_suit)
 {
     Card c(Card::RANK_JACK, Card::SUIT_SPADES);
@@ -30,7 +33,35 @@ TEST(test_is_functions)
     ASSERT_EQUAL(c.is_trump("Clubs"), false);
 }
 
+TEST(test_bool_operators_less_and_less_and_equal)
+{
+    Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
+    Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
+    ASSERT_FALSE(operator<(c, c2));
+    ASSERT_TRUE(operator<(c3, c2));
+    ASSERT_TRUE(operator<=(c, c2));
+}
 
-// Add more test cases here
+TEST(test_bool_operators_greater_and_greater_and_equal)
+{
+    Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
+    Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
+    ASSERT_FALSE(operator>(c, c2));
+    ASSERT_TRUE(operator>(c, c3));
+    ASSERT_TRUE(operator>=(c, c2)); 
+}
+
+TEST(test_bool_operator_equal_and_not_equal)
+{
+    Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
+    Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
+    ASSERT_FALSE(operator==(c, c3));
+    ASSERT_TRUE(operator==(c, c2)); 
+    ASSERT_TRUE(operator!=(c, c3));
+    ASSERT_FALSE(operator!=(c, c2));
+}
 
 TEST_MAIN()
