@@ -18,7 +18,7 @@ TEST(test_card_get_suit)
     Card c(Card::RANK_JACK, Card::SUIT_SPADES);
     Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
     ASSERT_EQUAL(Card::SUIT_CLUBS, c.get_suit("Clubs"));
-    ASSERT_EQUAL(Card::SUIT_SPADES, c.get_suit("Clubs"));
+    ASSERT_EQUAL(Card::SUIT_SPADES, c2.get_suit("Clubs"));
 }
 
 TEST(test_is_functions)
