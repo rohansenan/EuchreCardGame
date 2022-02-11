@@ -27,138 +27,102 @@ constexpr const char* const Card::SUIT_CLUBS;
 constexpr const char* const Card::SUIT_DIAMONDS;
 
 // add your code below
-//EFFECTS Initializes Card to the Two of Spades
-class Card {
-public:
-  // rank and suit names
-  static constexpr const char* const RANK_TWO = "Two";
-  static constexpr const char* const RANK_THREE = "Three";
-  static constexpr const char* const RANK_FOUR = "Four";
-  static constexpr const char* const RANK_FIVE = "Five";
-  static constexpr const char* const RANK_SIX = "Six";
-  static constexpr const char* const RANK_SEVEN = "Seven";
-  static constexpr const char* const RANK_EIGHT = "Eight";
-  static constexpr const char* const RANK_NINE = "Nine";
-  static constexpr const char* const RANK_TEN = "Ten";
-  static constexpr const char* const RANK_JACK = "Jack";
-  static constexpr const char* const RANK_QUEEN = "Queen";
-  static constexpr const char* const RANK_KING = "King";
-  static constexpr const char* const RANK_ACE = "Ace";
+static string find_left_bower(const string &trump)
+{
+    string left_bower;
+    if (trump == "Clubs")
+    {
+        left_bower = "Spades";
+    }
+    else if (trump == "Spades")
+    {
+        left_bower = "Clubs";
+    }
+    else if (trump == "Hearts")
+    {
+        left_bower = "Diamonds";
+    }
+    else
+    {
+        left_bower = "Hearts";
+    }
+    return left_bower;
+}
 
-  static constexpr const char* const SUIT_SPADES = "Spades";
-  static constexpr const char* const SUIT_HEARTS = "Hearts";
-  static constexpr const char* const SUIT_CLUBS = "Clubs";
-  static constexpr const char* const SUIT_DIAMONDS = "Diamonds";
+Card::Card()
+: rank(RANK_TWO), suit(SUIT_SPADES) {}
 
-  //EFFECTS Initializes Card to the Two of Spades
-  Card()
-  {
-      assert(false);
-  }
+Card::Card(const string &rank_in, const string &suit_in)
+: rank(rank_in), suit(suit_in) {}
 
-  //REQUIRES rank is one of "Two", "Three", "Four", "Five", "Six", "Seven",
-  //  "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"
-  //  suit is one of "Spades", "Hearts", "Clubs", "Diamonds"
-  //EFFECTS Initializes Card to specified rank and suit
-  Card(const string &rank_in, const string &suit_in);
+string Card::get_rank() const
+{
+    return rank;
+}
 
-  //EFFECTS Returns the rank
-  string get_rank() const;
+string Card::get_suit() const
+{
+    return suit;
+}
 
-  //EFFECTS Returns the suit.  Does not consider trump.
-  string get_suit() const;
+string Card::get_suit(const string &trump) const
+{
+    string left_bower = find_left_bower(trump);
+    if (rank == RANK_JACK && suit == left_bower)
+    {
+        return trump;
+    }
+    else
+    {
+        return suit;
+    }
+}
 
-  //REQUIRES trump is a valid suit
-  //EFFECTS Returns the suit
-  //HINT: the left bower is the trump suit!
-  string get_suit(const string &trump) const;
+bool Card::is_face() const
+{
+    if (rank == RANK_ACE || rank == RANK_KING || rank == RANK_QUEEN || rank == RANK_JACK)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
-  //EFFECTS Returns true if card is a face card (Jack, Queen, King or Ace)
-  bool is_face() const;
+bool Card::is_right_bower(const string &trump) const
+{
+    if (rank == RANK_JACK && suit == trump)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
-  //REQUIRES trump is a valid suit
-  //EFFECTS Returns true if card is the Jack of the trump suit
-  bool is_right_bower(const string &trump) const;
+bool Card::is_left_bower(const string &trump) const
+{
+    string left_bower = find_left_bower(trump);
+    if (rank == RANK_JACK && suit == left_bower)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
-  //REQUIRES trump is a valid suit
-  //EFFECTS Returns true if card is the Jack of the next suit
-  bool is_left_bower(const string &trump) const;
-
-  //REQUIRES trump is a valid suit
-  //EFFECTS Returns true if the card is a trump card.  All cards of the trump
-  // suit are trump cards.  The left bower is also a trump card.
-  bool is_trump(const string &trump) const;
-
-private:
-  string rank;
-  string suit;
-};
-
-// Suits in order from lowest suit to highest suit.
-constexpr const char* const SUIT_NAMES_BY_WEIGHT[] = {
-  Card::SUIT_SPADES,
-  Card::SUIT_HEARTS,
-  Card::SUIT_CLUBS,
-  Card::SUIT_DIAMONDS
-};
-const int NUM_SUITS = 4;
-
-// Ranks in order from lowest rank to highest rank.
-constexpr const char* const RANK_NAMES_BY_WEIGHT[] = {
-  Card::RANK_TWO,
-  Card::RANK_THREE,
-  Card::RANK_FOUR,
-  Card::RANK_FIVE,
-  Card::RANK_SIX,
-  Card::RANK_SEVEN,
-  Card::RANK_EIGHT,
-  Card::RANK_NINE,
-  Card::RANK_TEN,
-  Card::RANK_JACK,
-  Card::RANK_QUEEN,
-  Card::RANK_KING,
-  Card::RANK_ACE
-};
-const int NUM_RANKS = 13;
-
-//EFFECTS Returns true if lhs is lower value than rhs.
-//  Does not consider trump.
-bool operator<(const Card &lhs, const Card &rhs);
-
-//EFFECTS Returns true if lhs is lower value than rhs or the same card as rhs.
-//  Does not consider trump.
-bool operator<=(const Card &lhs, const Card &rhs);
-
-//EFFECTS Returns true if lhs is higher value than rhs.
-//  Does not consider trump.
-bool operator>(const Card &lhs, const Card &rhs);
-
-//EFFECTS Returns true if lhs is higher value than rhs or the same card as rhs.
-//  Does not consider trump.
-bool operator>=(const Card &lhs, const Card &rhs);
-
-//EFFECTS Returns true if lhs is same card as rhs.
-//  Does not consider trump.
-bool operator==(const Card &lhs, const Card &rhs);
-
-//EFFECTS Returns true if lhs is not the same card as rhs.
-//  Does not consider trump.
-bool operator!=(const Card &lhs, const Card &rhs);
-
-//REQUIRES suit is a valid suit
-//EFFECTS returns the next suit, which is the suit of the same color
-string Suit_next(const string &suit);
-
-//EFFECTS Prints Card to stream, for example "Two of Spades"
-ostream & operator<<(ostream &os, const Card &card);
-
-//REQUIRES trump is a valid suit
-//EFFECTS Returns true if a is lower value than b.  Uses trump to determine
-// order, as described in the spec.
-bool Card_less(const Card &a, const Card &b, const string &trump);
-
-//REQUIRES trump is a valid suit
-//EFFECTS Returns true if a is lower value than b.  Uses both the trump suit
-//  and the suit led to determine order, as described in the spec.
-bool Card_less(const Card &a, const Card &b, const Card &led_card,
-               const string &trump);
+bool Card::is_trump(const string &trump) const
+{
+    if (suit == trump)
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
