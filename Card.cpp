@@ -63,6 +63,53 @@ static int rank_value(const string &rank)
     return value;
 }
 
+static int suit_value(const string &suit, const string &trump)
+{
+    int value = -1;
+    for (int i = 0; i < NUM_SUITS; i++)
+    {
+        if (suit == SUIT_NAMES_BY_WEIGHT[i])
+        {
+            value = i;
+        }
+    }
+    if (suit == trump)
+    {
+        value = NUM_SUITS;
+    }
+    assert(value != -1);
+    return value;
+}
+
+static int card_value(const Card &c, const string &trump)
+{
+    int value = -1;
+    int MAX_VALUE = (NUM_RANKS * NUM_SUITS) + 1;
+    if (c.is_right_bower(trump))
+    {
+        value = MAX_VALUE;
+    }
+    else if (c.is_left_bower(trump))
+    {
+        value = MAX_VALUE - 1;
+    }
+    else 
+    {
+        if (c.get_suit() == trump)
+        {
+            value = (suit_value(c.get_suit(), trump) - 1) * 
+            NUM_RANKS + rank_value(c.get_rank());
+        }
+        else
+        {
+            value = suit_value(c.get_suit(), trump) * 
+            NUM_RANKS + rank_value(c.get_rank());
+        }
+    }
+    assert(value != -1);
+    return value;
+}
+
 Card::Card()
 : rank(RANK_TWO), suit(SUIT_SPADES) {}
 
@@ -223,4 +270,52 @@ bool operator!=(const Card &lhs, const Card &rhs)
     {
         return false;
     }
+}
+
+string Suit_next(const string &suit)
+{
+    string suit_next;
+    if (suit == Card::SUIT_CLUBS)
+    {
+        suit_next = Card::SUIT_SPADES;
+    }
+    else if (suit == Card::SUIT_SPADES)
+    {
+        suit_next = Card::SUIT_CLUBS;
+    }
+    else if (suit == Card::SUIT_HEARTS)
+    {
+        suit_next = Card::SUIT_DIAMONDS;
+    }
+    else if (suit == Card::SUIT_DIAMONDS)
+    {
+        suit_next = Card::SUIT_HEARTS;
+    }
+    return suit_next;
+}
+
+ostream & operator<<(ostream &os, const Card &card)
+{
+    os << card.get_rank() << " of " << card.get_suit() << endl;
+    return os;
+}
+
+bool Card_less(const Card &a, const Card &b, const string &trump)
+{
+    int a_value = card_value(a, trump);
+    int b_value = card_value(b, trump);
+    // cout << a_value << " " << b_value << endl;
+    if (a_value < b_value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    } 
+}
+
+bool Card_less(const Card &a, const Card &b, const Card &led_card, const string &trump)
+{
+    
 }
