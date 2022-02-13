@@ -94,6 +94,23 @@ TEST(test_bool_card_less)
     ASSERT_TRUE(Card_less(c2, c5, trump));
     ASSERT_TRUE(Card_less(c6, c3, trump));
     ASSERT_TRUE(Card_less(c3, c, trump));
+    ASSERT_TRUE(Card_less(c3, c5, trump));
+    ASSERT_TRUE(Card_less(c5, c4, trump));
+}
+
+TEST(test_bool_card_less_including_led_suit)
+{
+    Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
+    Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
+    Card c3(Card::RANK_ACE, Card::SUIT_HEARTS);
+    Card c4(Card::RANK_JACK, Card::SUIT_SPADES);
+    Card c5(Card::RANK_JACK, Card::SUIT_CLUBS);
+    Card c6(Card::RANK_JACK, Card::SUIT_HEARTS);
+    string trump = Card::SUIT_SPADES;
+    ASSERT_TRUE(Card_less(c3, c, c2, trump));
+    ASSERT_TRUE(Card_less(c, c3, c6, trump));
+    ASSERT_TRUE(Card_less(c5, c4, c, trump));
+    ASSERT_TRUE(Card_less(c, c6, c3, trump));   
 }
 
 TEST_MAIN()

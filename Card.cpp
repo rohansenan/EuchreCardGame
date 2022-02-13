@@ -63,7 +63,7 @@ static int rank_value(const string &rank)
     return value;
 }
 
-static int suit_value(const string &suit, const string &trump)
+static int suit_value(const string &suit)
 {
     int value = -1;
     for (int i = 0; i < NUM_SUITS; i++)
@@ -73,42 +73,10 @@ static int suit_value(const string &suit, const string &trump)
             value = i;
         }
     }
-    if (suit == trump)
-    {
-        value = NUM_SUITS;
-    }
     assert(value != -1);
     return value;
 }
 
-static int card_value(const Card &c, const string &trump)
-{
-    int value = -1;
-    int MAX_VALUE = (NUM_RANKS * NUM_SUITS) + 1;
-    if (c.is_right_bower(trump))
-    {
-        value = MAX_VALUE;
-    }
-    else if (c.is_left_bower(trump))
-    {
-        value = MAX_VALUE - 1;
-    }
-    else 
-    {
-        if (c.get_suit() == trump)
-        {
-            value = (suit_value(c.get_suit(), trump) - 1) * 
-            NUM_RANKS + rank_value(c.get_rank());
-        }
-        else
-        {
-            value = suit_value(c.get_suit(), trump) * 
-            NUM_RANKS + rank_value(c.get_rank());
-        }
-    }
-    assert(value != -1);
-    return value;
-}
 
 Card::Card()
 : rank(RANK_TWO), suit(SUIT_SPADES) {}
@@ -302,20 +270,80 @@ ostream & operator<<(ostream &os, const Card &card)
 
 bool Card_less(const Card &a, const Card &b, const string &trump)
 {
-    int a_value = card_value(a, trump);
-    int b_value = card_value(b, trump);
-    // cout << a_value << " " << b_value << endl;
-    if (a_value < b_value)
+    if (a.is_right_bower(trump))
+    {
+        return false;
+    }
+    else if (b.is_right_bower(trump))
+    {
+        return true;
+    }
+    else if (a.is_left_bower(trump))
+    {
+        return false;
+    }
+    else if (b.is_left_bower(trump))
+    {
+        return true;
+    }
+    else if (a.get_suit() == trump && b.get_suit() != trump)
+    {
+        return false;
+    }
+    else if (a.get_suit() != trump && b.get_suit() == trump)
     {
         return true;
     }
     else
     {
-        return false;
-    } 
+        if (operator==(a, b))
+        {
+            string a_suit = a.get_suit();
+            string b_suit = b.get_suit();
+            int a_suit_value = suit_value(a_suit);
+            int b_suit_value = suit_value(b_suit);
+            return a_suit_value < b_suit_value;
+        }
+        else
+        {
+            return operator<(a, b);
+        }
+    }
 }
 
 bool Card_less(const Card &a, const Card &b, const Card &led_card, const string &trump)
 {
-    
+    string led_suit = led_card.get_suit();
+    if (led_suit == trump)
+    {
+        return Card_less(a, b, trump);
+    }
+    else if (a.get_suit() != led_suit && b.get_suit() != led_suit)
+    {
+        return Card_less(a, b, trump);
+    }
+    else if (a.get_suit() != trump && b.get_suit() != trump)
+    {
+        if (a.get_suit() == led_suit && b.get_suit() != led_suit)
+        {
+            return false;
+        }
+        else if (a.get_suit() != led_suit && b.get_suit() == led_suit)
+        {
+            return true;
+        }
+        else 
+        {
+            return operator<(a, b);
+        }
+    }
+    else if (a.get_suit() == trump && b.get_suit() != trump)
+    {
+        return false;
+    }
+    else if (a.get_suit() != trump && b.get_suit() == trump)
+    {
+        return true;
+    }
+    return -1;
 }
