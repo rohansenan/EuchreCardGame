@@ -264,7 +264,7 @@ string Suit_next(const string &suit)
 
 ostream & operator<<(ostream &os, const Card &card)
 {
-    os << card.get_rank() << " of " << card.get_suit() << endl;
+    os << card.get_rank() << " of " << card.get_suit();
     return os;
 }
 
