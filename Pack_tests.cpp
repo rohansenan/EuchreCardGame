@@ -28,4 +28,43 @@ TEST(test_pack_ctor)
     ASSERT_EQUAL(Card::SUIT_SPADES, second.get_suit());
 }
 
+TEST(test_reset)
+{
+    Pack pack;
+    pack.deal_one();
+    pack.deal_one();
+    pack.deal_one();
+    pack.reset();
+    Card first = pack.deal_one();
+    ASSERT_EQUAL(Card::RANK_NINE, first.get_rank());
+    ASSERT_EQUAL(Card::SUIT_SPADES, first.get_suit());
+}
+
+TEST(test_shuffle)
+{
+    Pack pack;
+    Card firstOriginal = pack.deal_one();
+    Card secondOriginal = pack.deal_one();
+    pack.reset();
+    pack.shuffle();
+    pack.deal_one();
+    Card secondNew = pack.deal_one();
+    pack.deal_one();
+    Card fourthNew = pack.deal_one();
+    ASSERT_EQUAL(firstOriginal, secondNew);
+    ASSERT_EQUAL(secondOriginal, fourthNew);
+}
+
+TEST(test_empty)
+{
+    Pack pack;
+    pack.deal_one();
+    ASSERT_FALSE(pack.empty());
+    for (int i = 0; i < 23; i++)
+    {
+        pack.deal_one();
+    }
+    ASSERT_TRUE(pack.empty());
+}
+
 TEST_MAIN()
