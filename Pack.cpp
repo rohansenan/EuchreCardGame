@@ -17,7 +17,7 @@ Pack::Pack()
  Card("Nine", "Clubs"), Card("Ten", "Clubs"), Card("Jack", "Clubs"), 
  Card("Queen", "Clubs"), Card("King", "Clubs"), Card("Ace", "Clubs"),
  Card("Nine", "Diamonds"), Card("Ten", "Diamonds"), Card("Jack", "Diamonds"), 
- Card("King", "Diamonds"), Card("Queen", "Diamonds"), Card("Ace", "Diamonds"),},next(0)
+ Card("Queen", "Diamonds"), Card("King", "Diamonds"), Card("Ace", "Diamonds")},next(0)
  {}
 
 Pack::Pack(istream &pack_input)
@@ -48,17 +48,21 @@ void Pack::reset()
 }
 
 void Pack::shuffle()
-{
-    int top = 11;
-    int bot = 23;
-    for (int i = 23; i >= 0; i--)
+{ 
+    for (int j = 0; j < 7; j++)
     {
-        Card placeholder = cards[i];
-        cards[i] = cards[top];
-        i--;
-        top--;
-        cards[i] = cards[bot];
-        bot--;
+        array<Card, PACK_SIZE> cardsShuffle;
+        int top = 11;
+        int bot = 23;
+        for (int i = 23; i >= 0; i--)
+        {
+            cardsShuffle[i] = cards[top];
+            i--;
+            top--;
+            cardsShuffle[i] = cards[bot];
+            bot--;
+        }
+        cards = cardsShuffle;
     }
 }
 

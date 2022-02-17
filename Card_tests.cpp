@@ -24,13 +24,33 @@ TEST(test_card_get_suit)
     ASSERT_EQUAL(Card::SUIT_SPADES, c2.get_suit("Clubs"));
 }
 
-TEST(test_is_functions)
+TEST(test_is_face)
 {
     Card c(Card::RANK_JACK, Card::SUIT_SPADES);
-    ASSERT_EQUAL(c.is_face(), true);
-    ASSERT_EQUAL(c.is_right_bower("Clubs"), false);
-    ASSERT_EQUAL(c.is_left_bower("Clubs"), true);
-    ASSERT_EQUAL(c.is_trump("Clubs"), false);
+    //Card c2(Card::RANK_ACE, Card::SUIT_CLUBS);
+    ASSERT_TRUE(c.is_face());
+    // ASSERT_EQUAL(c2.is_face(), true);
+    // ASSERT_EQUAL(c2.is_right_bower("Clubs"), false);
+    // ASSERT_EQUAL(c2.is_left_bower("Clubs"), false);
+    // ASSERT_EQUAL(c2.is_trump("Clubs"), true);
+}
+
+TEST(test_is_right)
+{
+    Card c(Card::RANK_JACK, Card::SUIT_SPADES);
+    ASSERT_FALSE(c.is_right_bower("Clubs"));
+}
+
+TEST(test_is_left)
+{
+    Card c(Card::RANK_JACK, Card::SUIT_SPADES);
+    ASSERT_TRUE(c.is_left_bower("Clubs"));
+}
+
+TEST(test_is_trump)
+{
+    Card c(Card::RANK_JACK, Card::SUIT_SPADES);
+    ASSERT_TRUE(c.is_trump("Clubs"));
 }
 
 TEST(test_bool_operators_less_and_less_and_equal)
@@ -40,7 +60,7 @@ TEST(test_bool_operators_less_and_less_and_equal)
     Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
     ASSERT_FALSE(operator<(c, c2));
     ASSERT_TRUE(operator<(c3, c2));
-    ASSERT_TRUE(operator<=(c, c2));
+    //ASSERT_TRUE(operator<=(c, c2));
 }
 
 TEST(test_bool_operators_greater_and_greater_and_equal)
@@ -48,9 +68,9 @@ TEST(test_bool_operators_greater_and_greater_and_equal)
     Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
     Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
     Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
-    ASSERT_FALSE(operator>(c, c2));
+    ASSERT_TRUE(operator>(c, c2));
     ASSERT_TRUE(operator>(c, c3));
-    ASSERT_TRUE(operator>=(c, c2)); 
+    //ASSERT_TRUE(operator>=(c, c2)); 
 }
 
 TEST(test_bool_operator_equal_and_not_equal)
@@ -58,10 +78,12 @@ TEST(test_bool_operator_equal_and_not_equal)
     Card c(Card::RANK_ACE, Card::SUIT_CLUBS);
     Card c2(Card::RANK_ACE, Card::SUIT_SPADES);
     Card c3(Card::RANK_TWO, Card::SUIT_HEARTS);
+    Card c4(Card::RANK_ACE, Card::SUIT_CLUBS);
     ASSERT_FALSE(operator==(c, c3));
-    ASSERT_TRUE(operator==(c, c2)); 
+    ASSERT_FALSE(operator==(c, c2));
+    ASSERT_TRUE(operator==(c, c4)); 
     ASSERT_TRUE(operator!=(c, c3));
-    ASSERT_FALSE(operator!=(c, c2));
+    ASSERT_TRUE(operator!=(c, c2));
 }
 
 TEST(test_suit_next)
@@ -76,7 +98,7 @@ TEST(test_operator_output)
     ostringstream output;
     operator<<(output, c);
     ostringstream correct_output;
-    correct_output << "Ace of Clubs\n";
+    correct_output << "Ace of Clubs";
     ASSERT_EQUAL(output.str(), correct_output.str());
 }
 

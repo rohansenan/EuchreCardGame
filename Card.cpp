@@ -150,6 +150,10 @@ bool Card::is_trump(const string &trump) const
     {
         return true;
     }
+    else if (Card::is_left_bower(trump))
+    {
+        return true;
+    }
     else 
     {
         return false;
@@ -164,7 +168,20 @@ bool operator<(const Card &lhs, const Card &rhs)
     {
         return true;
     }
-    else
+    else if (lhs_value == rhs_value)
+    {
+        int lhs_suit_value = suit_value(lhs.get_suit());
+        int rhs_suit_value = suit_value(rhs.get_suit());
+        if (lhs_suit_value < rhs_suit_value)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else 
     {
         return false;
     }
@@ -192,7 +209,20 @@ bool operator>(const Card &lhs, const Card &rhs)
     {
         return true;
     }
-    else
+    else if (lhs_value == rhs_value)
+    {
+        int lhs_suit_value = suit_value(lhs.get_suit());
+        int rhs_suit_value = suit_value(rhs.get_suit());
+        if (lhs_suit_value > rhs_suit_value)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else 
     {
         return false;
     }
@@ -214,11 +244,16 @@ bool operator>=(const Card &lhs, const Card &rhs)
 
 bool operator==(const Card &lhs, const Card &rhs)
 {
-    int lhs_value = rank_value(lhs.get_rank());
-    int rhs_value = rank_value(rhs.get_rank());
-    if (lhs_value == rhs_value)
+    if (lhs.get_rank() == rhs.get_rank())
     {
-        return true;
+        if (lhs.get_suit() == rhs.get_suit())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
@@ -228,15 +263,13 @@ bool operator==(const Card &lhs, const Card &rhs)
 
 bool operator!=(const Card &lhs, const Card &rhs)
 {
-    int lhs_value = rank_value(lhs.get_rank());
-    int rhs_value = rank_value(rhs.get_rank());
-    if (lhs_value != rhs_value)
+    if (operator==(lhs, rhs))
     {
-        return true;
+        return false;
     }
     else
     {
-        return false;
+        return true;
     }
 }
 
@@ -296,7 +329,7 @@ bool Card_less(const Card &a, const Card &b, const string &trump)
     }
     else
     {
-        if (operator==(a, b))
+        if (rank_value(a.get_rank()) == rank_value(b.get_rank()))
         {
             string a_suit = a.get_suit();
             string b_suit = b.get_suit();
