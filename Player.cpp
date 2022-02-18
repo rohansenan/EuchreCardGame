@@ -41,6 +41,11 @@ class Simple : public Player
             if (upcardSuitCount >= 2)
             {
                 order_up_suit = upcardSuit;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         else if (round == 2)
@@ -48,10 +53,16 @@ class Simple : public Player
             if (nextSuitCount >= 1)
             {
                 order_up_suit = nextSuit;
+                return true;
             }
             else if (is_dealer)
             {
                 order_up_suit = nextSuit;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
