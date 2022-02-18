@@ -263,7 +263,7 @@ bool operator==(const Card &lhs, const Card &rhs)
 
 bool operator!=(const Card &lhs, const Card &rhs)
 {
-    if (operator==(lhs, rhs))
+    if (lhs==rhs)
     {
         return false;
     }
@@ -339,7 +339,7 @@ bool Card_less(const Card &a, const Card &b, const string &trump)
         }
         else
         {
-            return operator<(a, b);
+            return a < b;
         }
     }
 }
@@ -367,7 +367,7 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card, const string 
         }
         else 
         {
-            return operator<(a, b);
+            return a < b;
         }
     }
     else if (a.get_suit() == trump && b.get_suit() != trump)
