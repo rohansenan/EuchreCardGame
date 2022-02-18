@@ -51,4 +51,35 @@ TEST(make_trump)
     ASSERT_FALSE(jayson->make_trump(c8, false, 2, order_up_suit));
 }
 
+TEST(add_and_discard)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c("Ace", "Clubs");
+    const Card c2("Jack", "Spades");
+    const Card c3("Nine", "Hearts");
+    const Card c4("Queen", "Hearts");
+    const Card c5("Ten", "Diamonds");
+    const Card c6("Nine", "Clubs");
+
+    string order_up_suit;
+
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
+
+    jayson->add_and_discard(c6);
+
+    vector<Card> played;
+
+    played.push_back(jayson->lead_card("Clubs"));
+    ASSERT_TRUE(played.size() < 6);
+
+    for (int i = 0; i < played.size(); i++)
+    {
+        ASSERT_NOT_EQUAL(played.at(i), c3);
+    }
+}
+
 TEST_MAIN()

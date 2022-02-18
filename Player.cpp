@@ -9,6 +9,9 @@ using namespace std;
 class Simple : public Player 
 {
  public:
+    Simple(const string &name)
+    : name(name) {}
+
     const string &get_name() const override
     {
         return name;
@@ -114,6 +117,8 @@ class Simple : public Player
 class Human : public Player 
 {
  public:
+    Human(const string &name)
+    : name(name) {}
     const string &get_name() const override
     {
 
