@@ -84,7 +84,10 @@ class Simple : public Player
         }
         if (allTrump)
         {
-            
+            for (int i = 0; i < 5; i++)
+            {
+                
+            }
         }
     }
     Card play_card(const Card &led_card, const std::string &trump) override
