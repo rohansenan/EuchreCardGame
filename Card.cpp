@@ -59,7 +59,6 @@ static int rank_value(const string &rank)
             value = i;
         }
     }
-    assert(value != -1);
     return value;
 }
 

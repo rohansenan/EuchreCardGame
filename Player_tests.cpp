@@ -15,13 +15,6 @@ TEST(test_player_get_name) {
 }
 
 // Add more tests here
-TEST(add_card_and_lead_card)
-{
-    Player * jayson = Player_factory("Jayson", "Simple");
-    Card c("Ace", "Clubs");
-    jayson->add_card(c);
-    ASSERT_EQUAL(jayson->lead_card("Clubs"), c);
-}
 
 TEST(make_trump)
 {
@@ -31,6 +24,7 @@ TEST(make_trump)
     const Card c3("Nine", "Hearts");
     const Card c4("Queen", "Hearts");
     const Card c5("Ten", "Diamonds");
+
     const Card c6("Nine", "Clubs");
     const Card c7("Jack", "Hearts");
     const Card c8("Jack", "Diamonds");
@@ -45,10 +39,12 @@ TEST(make_trump)
 
     ASSERT_TRUE(jayson->make_trump(c6, false, 1, order_up_suit));
     ASSERT_FALSE(jayson->make_trump(c7, false, 1, order_up_suit));
-    ASSERT_TRUE(jayson->make_trump(c7, false, 2, order_up_suit));
+    ASSERT_FALSE(jayson->make_trump(c7, false, 2, order_up_suit));
     ASSERT_TRUE(jayson->make_trump(c8, true, 2, order_up_suit));
     ASSERT_FALSE(jayson->make_trump(c8, true, 1, order_up_suit));
-    ASSERT_FALSE(jayson->make_trump(c8, false, 2, order_up_suit));
+    ASSERT_TRUE(jayson->make_trump(c8, false, 2, order_up_suit));
+
+    delete jayson;
 }
 
 TEST(add_and_discard)
@@ -76,10 +72,126 @@ TEST(add_and_discard)
     played.push_back(jayson->lead_card("Clubs"));
     ASSERT_TRUE(played.size() < 6);
 
-    for (int i = 0; i < played.size(); i++)
+    for (size_t i = 0; i < played.size(); i++)
     {
         ASSERT_NOT_EQUAL(played.at(i), c3);
     }
+
+    delete jayson;
+}
+
+TEST(lead_card)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    Player * rohan = Player_factory("Rohan", "Simple");
+    const Card c("Ace", "Clubs");
+    const Card c2("Jack", "Spades");
+    const Card c3("Nine", "Hearts");
+    const Card c4("Queen", "Hearts");
+    const Card c5("Ten", "Diamonds");
+    
+    const Card c6("Ten", "Hearts");
+    const Card c7("Jack", "Hearts");
+    const Card c8("King", "Hearts");
+
+    string order_up_suit;
+
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
+
+    rohan->add_card(c3);
+    rohan->add_card(c4);
+    rohan->add_card(c6);
+    rohan->add_card(c7);
+    rohan->add_card(c8);
+
+    ASSERT_EQUAL(jayson->lead_card("Clubs"), c4);
+    ASSERT_EQUAL(jayson->lead_card("Hearts"), c);
+
+    ASSERT_EQUAL(rohan->lead_card("Hearts"), c7);
+    ASSERT_EQUAL(rohan->lead_card("Spades"), c8);
+
+    delete jayson;
+    delete rohan;
+}
+
+TEST(lead_card_2)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    Player * rohan = Player_factory("Rohan", "Simple");
+    const Card c("Jack", "Clubs");
+    const Card c2("Jack", "Spades");
+    const Card c3("Nine", "Hearts");
+    const Card c4("Queen", "Hearts");
+    const Card c5("Ten", "Diamonds");
+    
+    const Card c6("Ten", "Hearts");
+    const Card c7("Jack", "Hearts");
+    const Card c8("King", "Hearts");
+
+    string order_up_suit;
+
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
+
+    rohan->add_card(c3);
+    rohan->add_card(c4);
+    rohan->add_card(c6);
+    rohan->add_card(c7);
+    rohan->add_card(c8); 
+
+    ASSERT_EQUAL(jayson->lead_card("Spades"), c4);
+    ASSERT_EQUAL(rohan->lead_card("Clubs"), c8);
+}
+
+TEST(play_card)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    Player * rohan = Player_factory("Rohan", "Simple");
+    const Card c("Ace", "Clubs");
+    const Card c2("Jack", "Spades");
+    const Card c3("Nine", "Hearts");
+    const Card c4("Queen", "Hearts");
+    const Card c5("Ten", "Diamonds");
+    
+    const Card c6("Ten", "Hearts");
+    const Card c7("Jack", "Hearts");
+    const Card c8("King", "Hearts");
+
+    const Card c9("Nine", "Spades");
+    const Card c10("Nine", "Diamonds");
+    const Card c11("Ace", "Hearts");
+
+    string trump;
+
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
+
+    rohan->add_card(c3);
+    rohan->add_card(c4);
+    rohan->add_card(c6);
+    rohan->add_card(c7);
+    rohan->add_card(c8);
+
+    ASSERT_EQUAL(jayson->play_card(c9, "Spades"), c2);
+    ASSERT_EQUAL(jayson->play_card(c10, "Spades"), c5);
+    ASSERT_EQUAL(jayson->play_card(c6, "Spades"), c4);
+
+    ASSERT_EQUAL(rohan->play_card(c11, "Spades"), c8);
+    ASSERT_EQUAL(rohan->play_card(c11, "Hearts"), c7);
+    ASSERT_EQUAL(rohan->play_card(c9, "Clubs"), c3);
+
+    delete jayson;
+    delete rohan;
 }
 
 TEST_MAIN()
