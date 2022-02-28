@@ -111,7 +111,7 @@ class Simple : public Player
     {
         sort(hand);
         bool allTrump = true;
-        for (size_t i = 0; i < 5; i++)
+        for (size_t i = 0; i < hand.size(); i++)
         {
             if (!hand.at(i).is_trump(trump))
             {
@@ -125,33 +125,40 @@ class Simple : public Player
         if (allTrump)
         {
             Card card = hand[0];
-            for (size_t i = 1; i <= 5; i++)
+            int idx = 0;
+            for (size_t i = 1; i < hand.size(); i++)
             {
                 if(Card_less(card,hand[i], trump))
                 {
                     card=hand[i];
+                    idx = i;
                 }
             }
+            hand.erase(hand.begin() + idx);
             return card;
         }
         else
         {
             Card card = hand[0];
-            for (size_t i = 1; i <= hand.size(); i++)
+            int idx = 0;
+            for (size_t i = 1; i < hand.size(); i++)
             {
                 while(hand[i].get_suit(trump)==trump)
                 {
                     i+=1;
-                    if(i>hand.size())
+                    if(i==hand.size())
                     {
+                        hand.erase(hand.begin() + idx);
                         return card;
                     }
                 }
                 if(card<hand[i])
                 {
                     card=hand[i];
+                    idx = i;
                 }
             }
+            hand.erase(hand.begin() + idx);
             return card;
         }
     }
@@ -162,53 +169,51 @@ class Simple : public Player
         {
             return hand[0];
         }
-        bool boolean =false;
-        for(size_t i = 0; i< hand.size(); i++)
+        bool has_led_suit = false;
+        for(size_t i = 0; i < hand.size(); i++)
         {
             if(hand[i].get_suit(trump)==led_card.get_suit(trump))
             {
-                boolean = true;
+                has_led_suit = true;
             }
         }
-        if(boolean)
+        if(has_led_suit)
         {
             Card card = hand[0];
+            int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
                 while(hand[i].get_suit(trump)!=led_card.get_suit(trump))
                 {
                     i+=1;
-                    if(i>=hand.size())
+                    if(i==hand.size())
                     {
+                        hand.erase(hand.begin() + idx);
                         return card;
                     }
                 }
-                if(Card_less(card,hand[i],trump))
+                if(Card_less(card,hand[i], led_card, trump))
                 {
                     card=hand[i];
+                    idx = i;
                 }
             }
+            hand.erase(hand.begin() + idx);
             return card;
         }
         else
         {
-            
             Card card = hand[0];
+            int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit(trump)==trump)
+                if (Card_less(hand[i], card, trump))
                 {
-                    i+=1;
-                    if(i>=hand.size())
-                    {
-                        return card;
-                    }
-                }
-                if(!Card_less(card,hand[i], trump))
-                {
-                    card=hand[i];
+                    card = hand[i];
+                    idx = i;
                 }
             }
+            hand.erase(hand.begin() + idx);
             return card;
         }
        

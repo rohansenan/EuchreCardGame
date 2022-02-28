@@ -68,7 +68,6 @@ TEST(add_and_discard)
     jayson->add_and_discard(c6);
 
     vector<Card> played;
-
     played.push_back(jayson->lead_card("Clubs"));
     ASSERT_TRUE(played.size() < 6);
 
@@ -118,7 +117,7 @@ TEST(lead_card)
     delete rohan;
 }
 
-TEST(lead_card_2)
+TEST(lead_card_test_2)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
     Player * rohan = Player_factory("Rohan", "Simple");
