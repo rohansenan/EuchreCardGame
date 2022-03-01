@@ -109,9 +109,15 @@ TEST(lead_card)
 
     ASSERT_EQUAL(jayson->lead_card("Clubs"), c4);
     ASSERT_EQUAL(jayson->lead_card("Hearts"), c);
+    ASSERT_EQUAL(jayson->lead_card("Spades"), c5);
+    ASSERT_EQUAL(jayson->lead_card("Clubs"), c3);
+    ASSERT_EQUAL(jayson->lead_card("Spades"), c2);
 
-    ASSERT_EQUAL(rohan->lead_card("Hearts"), c7);
     ASSERT_EQUAL(rohan->lead_card("Spades"), c8);
+    ASSERT_EQUAL(rohan->lead_card("Diamonds"), c4);
+    rohan->add_card(c4);
+    ASSERT_EQUAL(rohan->lead_card("Hearts"), c7);
+
 
     delete jayson;
     delete rohan;
@@ -147,6 +153,9 @@ TEST(lead_card_test_2)
 
     ASSERT_EQUAL(jayson->lead_card("Spades"), c4);
     ASSERT_EQUAL(rohan->lead_card("Clubs"), c8);
+
+    delete jayson;
+    delete rohan;
 }
 
 TEST(play_card)
