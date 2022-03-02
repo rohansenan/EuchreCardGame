@@ -10,19 +10,25 @@ using namespace std;
 class Team
 {
 private:
+    int tricks_won;
+    int team_score;
+    bool is_attack;
     vector<Player*> players;
-    int tricks_won = 0;
-    int team_score = 0;
-    bool is_attack = false;
 
 public:
-    void add_player_to_team(Player *player)
+    Team (Player *p1, Player *p2, bool is_attack)
+    : tricks_won(0), team_score(0), is_attack(is_attack)
     {
-        players.push_back(player);
+        players.push_back(p1);
+        players.push_back(p2);
     }
     void set_attack()
     {
         is_attack = true;
+    }
+    void set_defense()
+    {
+        is_attack = false;
     }
     void add_tricks_won()
     {
@@ -69,16 +75,29 @@ public:
 class Game 
 {
 private:
-    vector<Player*> players;
-    Card upCard;
-    Pack pack;
     Team team1;
     Team team2;
+    Pack pack;
+    int dealerIndex;
+    vector<Player*> players;
+    Card upCard;
 
 public:
-    void add_player(Player *player)
+    Game (Player *p1, Player *p2, Player *p3, Player *p4)
+    : team1(p1, p3, false), team2(p2, p4, false), pack(), dealerIndex(0) 
     {
-        players.push_back(player);
+        players.push_back(p1);
+        players.push_back(p2);
+        players.push_back(p3);
+        players.push_back(p4);
+    }
+    Game (Player *p1, Player *p2, Player *p3, Player *p4, istream& pack_input)
+    : team1(p1, p3, false), team2(p2, p4, false), pack(pack_input), dealerIndex(0) 
+    {
+        players.push_back(p1);
+        players.push_back(p2);
+        players.push_back(p3);
+        players.push_back(p4);
     }
     void add_tricks_won(Player *player)
     {
@@ -96,30 +115,65 @@ public:
         team1.clear_trick_count();
         team2.clear_trick_count();
     }
-    void add_to_team(int teamNumber, Player *player)
-    {
-        if (teamNumber == 1)
-        {
-            team1.add_player_to_team(player);
-        }
-        else if (teamNumber == 2)
-        {
-            team2.add_player_to_team(player);
-        }
-    }
     void shuffleDeck()
     {
         pack.shuffle();
     }
+    void nextDealer()
+    {
+        dealerIndex++;
+        if (dealerIndex >= players.size())
+        {
+            dealerIndex = dealerIndex % players.size();
+        }
+    }
+    int getDealerIndex()
+    {
+        return dealerIndex;
+    }
     void dealCards()
     {
-        for (int j = 0; j < 5; j++)
+        int j = 0;
+        for (size_t i = dealerIndex + 1; j < 2; i + 2)
         {
-            for (size_t i = 0; i < players.size(); i++)
+            size_t k = i;
+            if (k >= players.size())
             {
-                players[i]->add_card(pack.deal_one());
+                k = k % players.size();
             }
+            players[k]->add_card(pack.deal_one());
+            players[k]->add_card(pack.deal_one());
+            players[k]->add_card(pack.deal_one());
+            size_t n = i + 1;
+            if (n >= players.size())
+            {
+                n = n % players.size();
+            }
+            players[n]->add_card(pack.deal_one());
+            players[n]->add_card(pack.deal_one());
+            j++;
         }
+        j = 0;
+        for (size_t i = dealerIndex + 1; j < 2; i + 2)
+        {
+            size_t k = i;
+            if (k >= players.size())
+            {
+                k = k % players.size();
+            }
+            players[k]->add_card(pack.deal_one());
+            players[k]->add_card(pack.deal_one());
+            size_t n = i + 1;
+            if (n >= players.size())
+            {
+                n = n % players.size();
+            }
+            players[n]->add_card(pack.deal_one());
+            players[n]->add_card(pack.deal_one());
+            players[n]->add_card(pack.deal_one());
+        }
+        nextDealer();
+        upCard = pack.deal_one();
     }
     void set_upCard(Card card)
     {
@@ -127,4 +181,7 @@ public:
     }
 };
 
+int main (int argc, char *argv[])
+{
 
+}
