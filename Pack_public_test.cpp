@@ -48,20 +48,7 @@ TEST(test_pack_empty) {
 
 TEST(test_pack_shuffle) {
   Pack pack;
-  for (int i = 0; i < PACK_SIZE; i++)
-  {
-    Card card = pack.deal_one();
-    cout << card.get_rank() << " of " << card.get_suit() << endl;
-  }
-  cout << "done" << endl;
-  pack.reset();
   pack.shuffle();
-  for (int i = 0; i < PACK_SIZE; i++)
-  {
-    Card card = pack.deal_one();
-    cout << card.get_rank() << " of " << card.get_suit() << endl;
-  }
-  pack.reset();
   Card first_card = pack.deal_one();
   ASSERT_EQUAL(first_card, Card(Card::RANK_KING, Card::SUIT_CLUBS));
 }
