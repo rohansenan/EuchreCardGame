@@ -44,6 +44,10 @@ public:
     {
         return team_score;
     }
+    vector<Player*> get_players_in_team()
+    {
+        return players;
+    }
     void add_score(int tricks_won)
     {
         if (is_attack)
@@ -55,6 +59,7 @@ public:
             else if (tricks_won == 5)
             {
                 team_score += 2;
+                cout << "march!" << endl;
             }
         }
         else
@@ -62,6 +67,7 @@ public:
             if (tricks_won >= 3)
             {
                 team_score += 2;
+                cout << "euchred!" << endl;
             }
         }
     }
@@ -109,9 +115,25 @@ public:
     {
         team2.get_score();
     }
+    int get_team1_tricks()
+    {
+        team1.get_tricks();
+    }
+    int get_team2_tricks()
+    {
+        team2.get_tricks();
+    }
     Player * get_player(int player_index)
     {
         return players[player_index];
+    }
+    vector<Player*> get_team1_players()
+    {
+        return team1.get_players_in_team();
+    }
+    vector<Player*> get_team2_players()
+    {
+        return team2.get_players_in_team();
     }
     Card get_up_card()
     {
@@ -126,6 +148,10 @@ public:
         else if (team2.is_player_here(player))
         {
             team2.add_tricks_won();
+        }
+        else
+        {
+            cout << "error player is not in any team" << endl;
         }
     }
     void add_score_to_teams()
@@ -220,6 +246,36 @@ public:
         }
         return false;
     }
+    void play_hand(string trump, int &leader_index)
+    {
+        size_t led_index = leader_index;
+        if (led_index > players.size())
+        {
+            led_index = led_index % players.size();
+        }
+        Card led_card = players[led_index]->lead_card(trump);
+        cout << led_card << " led by " << players[led_index]->get_name() << endl;
+        int j = 0;
+        Card winner = led_card;
+        int winner_index = led_index;
+        for (size_t i = led_index + 1; j < 3; i++)
+        {
+            if (i > players.size())
+            {
+                i = i % players.size();
+            }
+            Card played_card = players[i]->play_card(led_card, trump);
+            cout << played_card << " played by " << players[i]->get_name() << endl;
+            if (Card_less(winner, played_card, led_card, trump))
+            {
+                winner = played_card;
+                winner_index = i;
+            }
+        }
+        cout << players[winner_index]->get_name() << " takes the trick" << endl;
+        add_tricks_won(players[winner_index]);
+        leader_index = winner_index;
+    }
 };
 
 int main (int argc, char *argv[])
@@ -262,27 +318,65 @@ int main (int argc, char *argv[])
 
     Game game(p1, p2, p3, p4, pack_file);
 
+    vector<Player*> team1_players = game.get_team1_players();
+    vector<Player*> team2_players = game.get_team2_players();
+
     while (game.get_team1_score() < max_points && game.get_team2_score() < max_points)
     {
         int hand = 0;
-        while (hand < 5)
-        {
-            cout << "Hand " << hand << endl;
-    
-            cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
+        cout << "Hand " << hand << endl;
+        int tricks = 0;
+        cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
             << endl;
-            game.dealCards();
-            cout << game.get_up_card() << " turned up" << endl;
+        game.dealCards();
+        cout << game.get_up_card() << " turned up" << endl;
+        string trump;
+        
+        bool trumpMade = game.makingTrump(trump, 1);
 
-            string trump;
-
-            bool trumpMade = game.makingTrump(trump, 1);
-
-            if (!trumpMade)
-            {
-                game.makingTrump(trump, 2);
-            }
-            cout << endl;
+        if (!trumpMade)
+        {
+            game.makingTrump(trump, 2);
         }
+        cout << endl;
+
+        int leader_index = game.get_dealer_index() + 1;
+
+        while (tricks < 5)
+        {
+            game.play_hand(trump, leader_index);
+            cout << endl;
+            tricks++;
+        }
+
+        if (game.get_team1_tricks() > game.get_team2_tricks())
+        {
+            cout << team1_players[0]->get_name() << " and " 
+            << team1_players[1]->get_name() << " win the hand" << endl;
+        }
+        else
+        {
+            cout << team2_players[0]->get_name() << " and " 
+            << team2_players[1]->get_name() << " win the hand" << endl;
+        }
+        game.add_score_to_teams();
+        int team1_score = game.get_team1_score();
+        int team2_score = game.get_team2_score();
+        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        << " have " << team1_score << " points" << endl;
+        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        << " have " << team2_score << " points" << endl;
+        cout << endl;
+        hand++;
+    }
+    if (game.get_team1_score() >= max_points)
+    {
+        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        << " win!" << endl;
+    }
+    else
+    {
+        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        << " win!" << endl;
     }
 }

@@ -278,8 +278,23 @@ class Human : public Player
     }
     Card lead_card(const string &trump) override
     {
-        Card card;
-        return card;
+        sort(hand);
+        for (size_t i = 0; i < hand.size(); i++)
+        {
+            cout << hand[i] << endl;
+        }
+        cout << "Select a card" << endl;
+        size_t idx;
+        cin >> idx;
+        if (idx<= hand.size())
+        {
+            return hand[idx];
+        }
+        else
+        {
+            cout<<"dumbass"<<endl;
+            return hand[idx];
+        }
     }
     Card play_card(const Card &led_card, const string &trump) override
     {
