@@ -139,6 +139,22 @@ public:
     {
         return upCard;
     }
+    void set_teams_to_defense()
+    {
+        team1.set_defense();
+        team2.set_defense();
+    }
+    void set_team_to_attack(Player *player)
+    {
+        if (team1.is_player_here(player))
+        {
+            team1.set_attack();
+        }
+        else if (team2.is_player_here(player))
+        {
+            team2.set_attack();
+        }
+    }
     void add_tricks_won(Player *player)
     {
         if (team1.is_player_here(player))
@@ -232,8 +248,13 @@ public:
     }
     bool makingTrump(string &trump, int round)
     {
-        for (int i = 0; i < 4; i++)
+        int j = 0;
+        for (int i = dealerIndex + 1; j < 4; i++)
         {
+            if (i >= 4)
+            {
+                i = i % 4;
+            }
             bool is_dealer = false;
             if (i == dealerIndex)
             {
@@ -241,22 +262,26 @@ public:
             }
             if (players[i]->make_trump(upCard, is_dealer, round, trump))
             {
+                set_team_to_attack(players[i]);
                 std::cout << players[i]->get_name() << " orders up " << trump << endl;
-                players[dealerIndex]->add_and_discard(upCard);
+                if (round == 1)
+                {
+                    players[dealerIndex]->add_and_discard(upCard);
+                }
                 return true;
             }
             else
             {
                 std::cout << players[i]->get_name() << " passes" << endl;
             }
+            j++;
         }
         return false;
     }
     void play_hand(string &trump, int &leader_index)
     {
-        cout << trump << endl;
         size_t led_index = leader_index;
-        if (led_index > players.size())
+        if (led_index >= players.size())
         {
             led_index = led_index % players.size();
         }
@@ -342,6 +367,7 @@ int main (int argc, char *argv[])
 
     while (game.get_team1_score() < max_points && game.get_team2_score() < max_points)
     {
+        game.set_teams_to_defense();
         if (shuffle_decision == "shuffle")
         {
             game.resetDeck();

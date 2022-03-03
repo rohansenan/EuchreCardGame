@@ -318,11 +318,11 @@ bool Card_less(const Card &a, const Card &b, const string &trump)
     {
         return true;
     }
-    else if (a.get_suit() == trump && b.get_suit() != trump)
+    else if (a.get_suit(trump) == trump && b.get_suit(trump) != trump)
     {
         return false;
     }
-    else if (a.get_suit() != trump && b.get_suit() == trump)
+    else if (a.get_suit(trump) != trump && b.get_suit(trump) == trump)
     {
         return true;
     }
@@ -345,22 +345,22 @@ bool Card_less(const Card &a, const Card &b, const string &trump)
 
 bool Card_less(const Card &a, const Card &b, const Card &led_card, const string &trump)
 {
-    string led_suit = led_card.get_suit();
+    string led_suit = led_card.get_suit(trump);
     if (led_suit == trump)
     {
         return Card_less(a, b, trump);
     }
-    else if (a.get_suit() != led_suit && b.get_suit() != led_suit)
+    else if (a.get_suit(trump) != led_suit && b.get_suit(trump) != led_suit)
     {
         return Card_less(a, b, trump);
     }
-    else if (a.get_suit() != trump && b.get_suit() != trump)
+    else if (a.get_suit(trump) != trump && b.get_suit(trump) != trump)
     {
-        if (a.get_suit() == led_suit && b.get_suit() != led_suit)
+        if (a.get_suit(trump) == led_suit && b.get_suit(trump) != led_suit)
         {
             return false;
         }
-        else if (a.get_suit() != led_suit && b.get_suit() == led_suit)
+        else if (a.get_suit(trump) != led_suit && b.get_suit(trump) == led_suit)
         {
             return true;
         }
@@ -369,11 +369,11 @@ bool Card_less(const Card &a, const Card &b, const Card &led_card, const string 
             return a < b;
         }
     }
-    else if (a.get_suit() == trump && b.get_suit() != trump)
+    else if (a.get_suit(trump) == trump && b.get_suit(trump) != trump)
     {
         return false;
     }
-    else if (a.get_suit() != trump && b.get_suit() == trump)
+    else if (a.get_suit(trump) != trump && b.get_suit(trump) == trump)
     {
         return true;
     }

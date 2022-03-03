@@ -38,7 +38,7 @@ Pack::Pack(istream &pack_input)
 Card Pack::deal_one()
 {
     Card deal = cards[next];
-    next += 1;
+    next++;
     return deal; 
 }
 

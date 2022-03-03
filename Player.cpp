@@ -120,7 +120,9 @@ class Simple : public Player
         }
         if(hand.size()==1)
         {
-            return hand[0];
+            Card card = hand[0];
+            hand.erase(hand.begin());
+            return card;
         }
         if (allTrump)
         {
@@ -167,12 +169,14 @@ class Simple : public Player
         sort(hand);
         if(hand.size()==1)
         {
-            return hand[0];
+            Card card = hand[0];
+            hand.erase(hand.begin());
+            return card;
         }
         bool has_led_suit = false;
         for(size_t i = 0; i < hand.size(); i++)
         {
-            if(hand[i].get_suit(trump)==led_card.get_suit(trump))
+            if(hand[i].get_suit()==led_card.get_suit())
             {
                 has_led_suit = true;
             }
@@ -183,7 +187,7 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit(trump)!=led_card.get_suit(trump))
+                while(hand[i].get_suit()!=led_card.get_suit())
                 {
                     i+=1;
                     if(i==hand.size())
@@ -192,9 +196,10 @@ class Simple : public Player
                         return card;
                     }
                 }
-                if (card.get_suit(trump)!=led_card.get_suit(trump))
+                if (card.get_suit()!=led_card.get_suit())
                 {
                     card = hand[i];
+                    idx = i;
                 }
                 else
                 {
@@ -252,9 +257,9 @@ class Human : public Player
         string decision;
         for (size_t i = 0; i < handCopy.size(); i++)
         {
-            cout << handCopy[i] << endl;
+            cout << "Human player " << name << "'s hand: " << "[" << i << "] " << handCopy[i] << endl;
         }
-        cout << "Do you want to pass or order up?" << endl;
+        cout << "Human player " << name << ", please enter a suit, or 'pass':" << endl;
         cin >> decision;
         if (!(decision == "pass"))
         {
@@ -272,10 +277,10 @@ class Human : public Player
         size_t idx;
         for (size_t i = 0; i < hand.size(); i++)
         {
-            cout << hand[i] << endl;
+           cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
         }
-        cout << upcard << endl;
-        cout << "Choose card to discard" << endl;
+         cout << "Discard upcard: [-1]" << endl;
+        cout << "Human player " << name << ", please select a card to discard:" << endl;
         cin >> idx;
         if (idx < hand.size())
         {        
@@ -288,14 +293,16 @@ class Human : public Player
         sort(hand);
         for (size_t i = 0; i < hand.size(); i++)
         {
-            cout << hand[i] << endl;
+           cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
         }
-        cout << "Select a card" << endl;
+        cout << "Human player " << name << ", please select a card:" << endl;
         size_t idx;
         cin >> idx;
         if (idx<= hand.size())
         {
-            return hand[idx];
+            Card card = hand[idx];
+            hand.erase(hand.begin() + idx);
+            return card;
         }
         else
         {
@@ -308,14 +315,16 @@ class Human : public Player
         sort(hand);
         for (size_t i = 0; i < hand.size(); i++)
         {
-            cout << hand[i] << endl;
+            cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
         }
-        cout << "Select a card" << endl;
+        cout << "Human player " << name << ", please select a card:" << endl;
         size_t idx;
         cin >> idx;
         if (idx<= hand.size())
         {
-            return hand[idx];
+            Card card = hand[idx];
+            hand.erase(hand.begin() + idx);
+            return card;
         }
         else
         {
