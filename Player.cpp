@@ -192,10 +192,17 @@ class Simple : public Player
                         return card;
                     }
                 }
-                if(Card_less(card,hand[i], led_card, trump))
+                if (card.get_suit(trump)!=led_card.get_suit(trump))
                 {
-                    card=hand[i];
-                    idx = i;
+                    card = hand[i];
+                }
+                else
+                {
+                    if(Card_less(card,hand[i], led_card, trump))
+                    {
+                        card=hand[i];
+                        idx = i;
+                    }
                 }
             }
             hand.erase(hand.begin() + idx);
