@@ -312,6 +312,67 @@ public:
         leader_index = winner_index;
     }
 };
+int play(Game &game, int &hand, string &shuffle_decision )
+{
+    vector<Player*> team1_players = game.get_team1_players();
+    vector<Player*> team2_players = game.get_team2_players();
+
+     game.set_teams_to_defense();
+        if (shuffle_decision == "shuffle")
+        {
+            game.resetDeck();
+            game.shuffleDeck();
+        }
+        else
+        {
+            game.resetDeck();
+        }
+        std::cout << "Hand " << hand << endl;
+        int tricks = 0;
+        std::cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
+            << endl;
+        game.dealCards();
+        std::cout << game.get_up_card() << " turned up" << endl;
+        string trump;
+        
+        bool trumpMade = game.makingTrump(trump, 1);
+
+        if (!trumpMade)
+        {
+            game.makingTrump(trump, 2);
+        }
+        std::cout << endl;
+
+        int leader_index = game.get_dealer_index() + 1;
+
+        while (tricks < 5)
+        {
+            game.play_hand(trump, leader_index);
+            std::cout << endl;
+            tricks++;
+        }
+
+        if (game.get_team1_tricks() > game.get_team2_tricks())
+        {
+            std::cout << team1_players[0]->get_name() << " and " 
+            << team1_players[1]->get_name() << " win the hand" << endl;
+        }
+        else
+        {
+            std::cout << team2_players[0]->get_name() << " and " 
+            << team2_players[1]->get_name() << " win the hand" << endl;
+        }
+        game.add_score_to_teams();
+        int team1_score = game.get_team1_score();
+        int team2_score = game.get_team2_score();
+        std::cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        << " have " << team1_score << " points" << endl;
+        std::cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        << " have " << team2_score << " points" << endl;
+        std::cout << endl;
+        game.nextDealer();
+        hand++;
+}
 
 int main (int argc, char *argv[])
 {
@@ -369,61 +430,7 @@ int main (int argc, char *argv[])
 
     while (game.get_team1_score() < max_points && game.get_team2_score() < max_points)
     {
-        game.set_teams_to_defense();
-        if (shuffle_decision == "shuffle")
-        {
-            game.resetDeck();
-            game.shuffleDeck();
-        }
-        else
-        {
-            game.resetDeck();
-        }
-        std::cout << "Hand " << hand << endl;
-        int tricks = 0;
-        std::cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
-            << endl;
-        game.dealCards();
-        std::cout << game.get_up_card() << " turned up" << endl;
-        string trump;
-        
-        bool trumpMade = game.makingTrump(trump, 1);
-
-        if (!trumpMade)
-        {
-            game.makingTrump(trump, 2);
-        }
-        std::cout << endl;
-
-        int leader_index = game.get_dealer_index() + 1;
-
-        while (tricks < 5)
-        {
-            game.play_hand(trump, leader_index);
-            std::cout << endl;
-            tricks++;
-        }
-
-        if (game.get_team1_tricks() > game.get_team2_tricks())
-        {
-            std::cout << team1_players[0]->get_name() << " and " 
-            << team1_players[1]->get_name() << " win the hand" << endl;
-        }
-        else
-        {
-            std::cout << team2_players[0]->get_name() << " and " 
-            << team2_players[1]->get_name() << " win the hand" << endl;
-        }
-        game.add_score_to_teams();
-        int team1_score = game.get_team1_score();
-        int team2_score = game.get_team2_score();
-        std::cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
-        << " have " << team1_score << " points" << endl;
-        std::cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
-        << " have " << team2_score << " points" << endl;
-        std::cout << endl;
-        game.nextDealer();
-        hand++;
+       play(game, hand, shuffle_decision);
     }
     if (game.get_team1_score() >= max_points)
     {
