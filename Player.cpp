@@ -203,7 +203,8 @@ class Simple : public Player
                     card = hand[i];
                     idx = i;
                 }
-               if(card.get_suit()==led_card.get_suit() && Card_less(card,hand[i], led_card, trump))
+               if(card.get_suit()==led_card.get_suit() && 
+                     Card_less(card,hand[i], led_card, trump))
                 {
                         card=hand[i];
                         idx = i;
