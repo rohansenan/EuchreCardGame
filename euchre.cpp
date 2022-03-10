@@ -169,7 +169,7 @@ public:
         }
         else
         {
-            std::cout << "error player is not in any team" << endl;
+            cout << "error player is not in any team" << endl;
         }
     }
     void add_score_to_teams()
@@ -265,7 +265,7 @@ public:
             if (players[i]->make_trump(upCard, is_dealer, round, trump))
             {
                 set_team_to_attack(players[i]);
-                std::cout << players[i]->get_name() << " orders up " << trump << endl;
+                cout << players[i]->get_name() << " orders up " << trump << endl;
                 if (round == 1)
                 {
                     players[dealerIndex]->add_and_discard(upCard);
@@ -274,7 +274,7 @@ public:
             }
             else
             {
-                std::cout << players[i]->get_name() << " passes" << endl;
+                cout << players[i]->get_name() << " passes" << endl;
             }
             j++;
         }
@@ -288,7 +288,7 @@ public:
             led_index = led_index % players.size();
         }
         Card led_card = players[led_index]->lead_card(trump);
-        std::cout << led_card << " led by " << players[led_index]->get_name() << endl;
+        cout << led_card << " led by " << players[led_index]->get_name() << endl;
         int j = 0;
         Card winner = led_card;
         int winner_index = led_index;
@@ -299,7 +299,7 @@ public:
                 i = i % players.size();
             }
             Card played_card = players[i]->play_card(led_card, trump);
-            std::cout << played_card << " played by " << players[i]->get_name() << endl;
+            cout << played_card << " played by " << players[i]->get_name() << endl;
             if (Card_less(winner, played_card, led_card, trump))
             {
                 winner = played_card;
@@ -307,7 +307,7 @@ public:
             }
             j++;
         }
-        std::cout << players[winner_index]->get_name() << " takes the trick" << endl;
+        cout << players[winner_index]->get_name() << " takes the trick" << endl;
         add_tricks_won(players[winner_index]);
         leader_index = winner_index;
     }
@@ -327,12 +327,12 @@ int play(Game &game, int &hand, string &shuffle_decision )
         {
             game.resetDeck();
         }
-        std::cout << "Hand " << hand << endl;
+        cout << "Hand " << hand << endl;
         int tricks = 0;
-        std::cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
+        cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
             << endl;
         game.dealCards();
-        std::cout << game.get_up_card() << " turned up" << endl;
+        cout << game.get_up_card() << " turned up" << endl;
         string trump;
         
         bool trumpMade = game.makingTrump(trump, 1);
@@ -341,35 +341,35 @@ int play(Game &game, int &hand, string &shuffle_decision )
         {
             game.makingTrump(trump, 2);
         }
-        std::cout << endl;
+        cout << endl;
 
         int leader_index = game.get_dealer_index() + 1;
 
         while (tricks < 5)
         {
             game.play_hand(trump, leader_index);
-            std::cout << endl;
+            cout << endl;
             tricks++;
         }
 
         if (game.get_team1_tricks() > game.get_team2_tricks())
         {
-            std::cout << team1_players[0]->get_name() << " and " 
+            cout << team1_players[0]->get_name() << " and " 
             << team1_players[1]->get_name() << " win the hand" << endl;
         }
         else
         {
-            std::cout << team2_players[0]->get_name() << " and " 
+            cout << team2_players[0]->get_name() << " and " 
             << team2_players[1]->get_name() << " win the hand" << endl;
         }
         game.add_score_to_teams();
         int team1_score = game.get_team1_score();
         int team2_score = game.get_team2_score();
-        std::cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
         << " have " << team1_score << " points" << endl;
-        std::cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
         << " have " << team2_score << " points" << endl;
-        std::cout << endl;
+        cout << endl;
         game.nextDealer();
         hand++;
 }
@@ -381,12 +381,13 @@ int main (int argc, char *argv[])
     string p2_strategy = argv[7];
     string p3_strategy = argv[9];
     string p4_strategy = argv[11];
-    if (argc != 12 && (atoi(argv[3]) < 1 || atoi(argv[3]) > 100) && (shuffle_decision != "shuffle" 
-    || shuffle_decision != "noshuffle") && (p1_strategy != "Simple" || p1_strategy != "Human") 
+    if (argc != 12 && (atoi(argv[3]) < 1 || atoi(argv[3]) > 100) && 
+    (shuffle_decision != "shuffle" || shuffle_decision != "noshuffle") &&
+     (p1_strategy != "Simple" || p1_strategy != "Human") 
     && (p2_strategy != "Simple" || p2_strategy != "Human") && (p3_strategy != "Simple" 
     || p3_strategy != "Human") && (p4_strategy != "Simple" || p4_strategy != "Human"))
     {
-        std::cout << "Usage: euchre.exe PACK_FILENAME [shuffle|noshuffle] "
+        cout << "Usage: euchre.exe PACK_FILENAME [shuffle|noshuffle] "
         << "POINTS_TO_WIN NAME1 TYPE1 NAME2 TYPE2 NAME3 TYPE3 "
         << "NAME4 TYPE4" << endl;
         return 1;
@@ -399,15 +400,15 @@ int main (int argc, char *argv[])
 
     if (!fin.is_open())
     {
-        std::cout << "Error opening " << pack_filename << endl;
+        cout << "Error opening " << pack_filename << endl;
         return 1;
     }
 
     for (int i = 0; i < 12; i++)
     {
-        std::cout << argv[i] << " ";
+        cout << argv[i] << " ";
     }
-    std::cout << endl;
+    cout << endl;
 
     Player *p1 = Player_factory(argv[4], argv[5]);
     Player *p2 = Player_factory(argv[6], argv[7]);
@@ -434,12 +435,12 @@ int main (int argc, char *argv[])
     }
     if (game.get_team1_score() >= max_points)
     {
-        std::cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
         << " win!" << endl;
     }
     else
     {
-        std::cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
         << " win!" << endl;
     }
 }
