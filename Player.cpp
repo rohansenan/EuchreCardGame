@@ -291,6 +291,7 @@ class Human : public Player
     Card lead_card(const string &trump) override
     {
         sort(hand);
+
         for (size_t i = 0; i < hand.size(); i++)
         {
            cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
@@ -306,16 +307,16 @@ class Human : public Player
         }
         else
         {
-            cout<<"dumbass"<<endl;
+            cout<<"idiot"<<endl;
             return hand[idx];
         }
     }
     Card play_card(const Card &led_card, const string &trump) override
     {
         sort(hand);
-        for (size_t i = 0; i < hand.size(); i++)
+        for (size_t j = 0; j < hand.size(); j++)
         {
-            cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
+            cout << "Human player " << name << "'s hand: " << "[" << j << "] " << hand[j] << endl;
         }
         cout << "Human player " << name << ", please select a card:" << endl;
         size_t idx;
