@@ -312,7 +312,7 @@ public:
         leader_index = winner_index;
     }
 };
-int play(Game &game, int &hand, string &shuffle_decision )
+void play(Game &game, int &hand, string &shuffle_decision )
 {
     vector<Player*> team1_players = game.get_team1_players();
     vector<Player*> team2_players = game.get_team2_players();
