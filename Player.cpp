@@ -256,7 +256,8 @@ class Human : public Player
         string decision;
         for (size_t i = 0; i < handCopy.size(); i++)
         {
-            cout << "Human player " << name << "'s hand: " << "[" << i << "] " << handCopy[i] << endl;
+            cout << "Human player " << name << "'s hand: " ;
+            cout << "[" << i << "] " << handCopy[i] << endl;
         }
         cout << "Human player " << name << ", please enter a suit, or 'pass':" << endl;
         cin >> decision;
@@ -276,7 +277,8 @@ class Human : public Player
         size_t idx;
         for (size_t i = 0; i < hand.size(); i++)
         {
-           cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
+           cout << "Human player " << name << "'s hand: ";
+           cout << "[" << i << "] " << hand[i] << endl;
         }
          cout << "Discard upcard: [-1]" << endl;
         cout << "Human player " << name << ", please select a card to discard:" << endl;
@@ -293,7 +295,8 @@ class Human : public Player
 
         for (size_t i = 0; i < hand.size(); i++)
         {
-           cout << "Human player " << name << "'s hand: " << "[" << i << "] " << hand[i] << endl;
+           cout << "Human player " << name << "'s hand: "; 
+           cout << "[" << i << "] " << hand[i] << endl;
         }
         cout << "Human player " << name << ", please select a card:" << endl;
         size_t idx;
@@ -315,7 +318,8 @@ class Human : public Player
         sort(hand);
         for (size_t j = 0; j < hand.size(); j++)
         {
-            cout << "Human player " << name << "'s hand: " << "[" << j << "] " << hand[j] << endl;
+            cout << "Human player " << name << "'s hand: ";
+            cout << "[" << j << "] " << hand[j] << endl;
         }
         cout << "Human player " << name << ", please select a card:" << endl;
         size_t idx;
