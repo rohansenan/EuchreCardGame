@@ -259,7 +259,7 @@ class Human : public Player
             cout << "Human player " << name << "'s hand: " ;
             cout << "[" << i << "] " << handCopy[i] << endl;
         }
-        cout << "Human player " << name << ", please enter a suit, or 'pass':" << endl;
+        cout << "Human player " << name << ", please enter a suit, or \"pass\":" << endl;
         cin >> decision;
         if (!(decision == "pass"))
         {
