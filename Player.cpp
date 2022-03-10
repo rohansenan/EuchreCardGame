@@ -145,14 +145,15 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit(trump)==trump)
+                while(hand[i].get_suit(trump)==trump && i!=hand.size())
                 {
                     i+=1;
-                    if(i==hand.size())
-                    {
+                   
+                }
+                if(i==hand.size())
+                {
                         hand.erase(hand.begin() + idx);
                         return card;
-                    }
                 }
                 if(card<hand[i])
                 {
@@ -187,27 +188,25 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit()!=led_card.get_suit())
+                while(hand[i].get_suit()!=led_card.get_suit() && i!=hand.size())
                 {
                     i+=1;
-                    if(i==hand.size())
-                    {
+                   
+                }
+                if(i==hand.size())
+                {
                         hand.erase(hand.begin() + idx);
                         return card;
-                    }
                 }
                 if (card.get_suit()!=led_card.get_suit())
                 {
                     card = hand[i];
                     idx = i;
                 }
-                else
+               if(card.get_suit()==led_card.get_suit() && Card_less(card,hand[i], led_card, trump))
                 {
-                    if(Card_less(card,hand[i], led_card, trump))
-                    {
                         card=hand[i];
                         idx = i;
-                    }
                 }
             }
             hand.erase(hand.begin() + idx);
