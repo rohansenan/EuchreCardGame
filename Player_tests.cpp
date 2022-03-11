@@ -47,6 +47,30 @@ TEST(make_trump)
     delete jayson;
 }
 
+// TEST(make_trump_2)
+// {
+//     Player * jayson = Player_factory("Jayson", "Simple");
+
+//     const Card c("Jack", "Spades");
+//     const Card c2("Nine", "Clubs");
+//     const Card c3("Nine", "Diamonds");
+//     const Card c4("Jack", "Hearts");
+//     const Card c5("Nine", "Hearts");
+//     const Card c6("Ten", "Diamonds");
+
+//     string order_up_suit;
+
+//     jayson->add_card(c);
+//     jayson->add_card(c2);
+//     jayson->add_card(c3);
+//     jayson->add_card(c4);
+//     jayson->add_card(c5);
+
+//     ASSERT_TRUE(jayson->make_trump(c6, false, 2, order_up_suit));
+
+//     delete jayson;
+// }
+
 TEST(add_and_discard)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
@@ -56,8 +80,6 @@ TEST(add_and_discard)
     const Card c4("Queen", "Hearts");
     const Card c5("Ten", "Diamonds");
     const Card c6("Nine", "Clubs");
-
-    string order_up_suit;
 
     jayson->add_card(c);
     jayson->add_card(c2);
@@ -198,6 +220,38 @@ TEST(play_card)
     ASSERT_EQUAL(rohan->play_card(c11, "Hearts"), c7);
     ASSERT_EQUAL(rohan->play_card(c9, "Clubs"), c3);
 
+    delete jayson;
+    delete rohan;
+}
+
+TEST(play_card_2)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    Player * rohan = Player_factory("Jayson", "Simple");
+
+    const Card c("Jack", "Spades");
+    const Card c2("Jack", "Hearts");
+    const Card c3("Ten", "Spades");
+    const Card c4("Ace", "Clubs");
+    const Card c5("Ace", "Diamonds");
+    const Card c6("Ten", "Clubs");
+    const Card c7("Jack", "Clubs");
+
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
+
+    rohan->add_card(c2);
+    rohan->add_card(c3);
+    rohan->add_card(c4);
+    rohan->add_card(c5);
+    rohan->add_card(c7);
+
+    ASSERT_EQUAL(jayson->play_card(c6, "Clubs"), c);
+    ASSERT_EQUAL(rohan->play_card(c6, "Spades"), c4);
+    
     delete jayson;
     delete rohan;
 }

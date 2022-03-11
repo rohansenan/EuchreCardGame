@@ -51,7 +51,7 @@ class Simple : public Player
             {
                 upcardSuitCount++;
             }
-            else if(hand.at(i).is_trump(nextSuit) && hand.at(i).is_face())
+            if(hand.at(i).is_trump(nextSuit) && hand.at(i).is_face())
             {
                 nextSuitCount++;
             }
@@ -177,7 +177,7 @@ class Simple : public Player
         bool has_led_suit = false;
         for(size_t i = 0; i < hand.size(); i++)
         {
-            if(hand[i].get_suit()==led_card.get_suit())
+            if(hand[i].get_suit(trump)==led_card.get_suit(trump))
             {
                 has_led_suit = true;
             }
@@ -188,7 +188,8 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit()!=led_card.get_suit() && i!=hand.size())
+                while(hand[i].get_suit(trump)!=led_card.get_suit(trump) 
+                && i!=hand.size())
                 {
                     i+=1;
                    
@@ -198,12 +199,12 @@ class Simple : public Player
                         hand.erase(hand.begin() + idx);
                         return card;
                 }
-                if (card.get_suit()!=led_card.get_suit())
+                if (card.get_suit(trump)!=led_card.get_suit(trump))
                 {
                     card = hand[i];
                     idx = i;
                 }
-               if(card.get_suit()==led_card.get_suit() && 
+               if(card.get_suit(trump)==led_card.get_suit(trump) && 
                      Card_less(card,hand[i], led_card, trump))
                 {
                         card=hand[i];
@@ -230,6 +231,9 @@ class Simple : public Player
         }
        
     }
+
+    virtual ~Simple() {}
+
  private: 
     string name;
     string strategy;
@@ -337,6 +341,8 @@ class Human : public Player
             return hand[idx];
         }
     }
+
+    virtual ~Human() {}
 
  private: 
     string name;

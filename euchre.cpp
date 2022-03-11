@@ -101,14 +101,10 @@ private:
     Card upCard;
 
 public:
-    Game (Player *p1, Player *p2, Player *p3, Player *p4, istream& pack_input)
-    : team1(p1, p3, false), team2(p2, p4, false), pack(pack_input), dealerIndex(0) 
-    {
-        players.push_back(p1);
-        players.push_back(p2);
-        players.push_back(p3);
-        players.push_back(p4);
-    }
+    Game (vector<Player *> players, istream& pack_input)
+    : team1(players.at(0), players.at(2), false), team2(players.at(1), 
+    players.at(3), false), pack(pack_input), dealerIndex(0), players(players) 
+    {}
     int get_team1_score()
     {
         return team1.get_score();
@@ -384,7 +380,7 @@ int main (int argc, char *argv[])
     if (argc != 12 && (atoi(argv[3]) < 1 || atoi(argv[3]) > 100) && 
     (shuffle_decision != "shuffle" || shuffle_decision != "noshuffle") &&
      (p1_strategy != "Simple" || p1_strategy != "Human") 
-    && (p2_strategy != "Simple" || p2_strategy != "Human") && (p3_strategy != "Simple" 
+    && (p2_strategy != "Simple" || p2_strategy != "Human") && (p3_strategy != "Simple"
     || p3_strategy != "Human") && (p4_strategy != "Simple" || p4_strategy != "Human"))
     {
         cout << "Usage: euchre.exe PACK_FILENAME [shuffle|noshuffle] "
@@ -410,10 +406,12 @@ int main (int argc, char *argv[])
     }
     cout << endl;
 
-    Player *p1 = Player_factory(argv[4], argv[5]);
-    Player *p2 = Player_factory(argv[6], argv[7]);
-    Player *p3 = Player_factory(argv[8], argv[9]);
-    Player *p4 = Player_factory(argv[10], argv[11]);
+    vector<Player *> players;
+
+    players.push_back(Player_factory(argv[4], argv[5]));
+    players.push_back(Player_factory(argv[6], argv[7]));
+    players.push_back(Player_factory(argv[8], argv[9]));
+    players.push_back(Player_factory(argv[10], argv[11]));
 
     stringstream pack_file;
     string word;
@@ -422,7 +420,7 @@ int main (int argc, char *argv[])
         pack_file << word << endl;
     }
 
-    Game game(p1, p2, p3, p4, pack_file);
+    Game game(players, pack_file);
 
     vector<Player*> team1_players = game.get_team1_players();
     vector<Player*> team2_players = game.get_team2_players();
@@ -442,5 +440,10 @@ int main (int argc, char *argv[])
     {
         cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
         << " win!" << endl;
+    }
+    
+    for (size_t i = 0; i < players.size(); i++)
+    {
+        delete players[i];
     }
 }
