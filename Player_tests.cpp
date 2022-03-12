@@ -4,6 +4,7 @@
 #include "unit_test_framework.h"
 
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -47,29 +48,30 @@ TEST(make_trump)
     delete jayson;
 }
 
-// TEST(make_trump_2)
-// {
-//     Player * jayson = Player_factory("Jayson", "Simple");
+//Check if this makes a difference
+TEST(make_trump_2)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
 
-//     const Card c("Jack", "Spades");
-//     const Card c2("Nine", "Clubs");
-//     const Card c3("Nine", "Diamonds");
-//     const Card c4("Jack", "Hearts");
-//     const Card c5("Nine", "Hearts");
-//     const Card c6("Ten", "Diamonds");
+    const Card c("Jack", "Spades");
+    const Card c2("Nine", "Clubs");
+    const Card c3("Nine", "Diamonds");
+    const Card c4("Jack", "Hearts");
+    const Card c5("Nine", "Hearts");
+    const Card c6("Ten", "Diamonds");
 
-//     string order_up_suit;
+    string order_up_suit;
 
-//     jayson->add_card(c);
-//     jayson->add_card(c2);
-//     jayson->add_card(c3);
-//     jayson->add_card(c4);
-//     jayson->add_card(c5);
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    jayson->add_card(c4);
+    jayson->add_card(c5);
 
-//     ASSERT_TRUE(jayson->make_trump(c6, false, 2, order_up_suit));
+    ASSERT_TRUE(jayson->make_trump(c6, false, 2, order_up_suit));
 
-//     delete jayson;
-// }
+    delete jayson;
+}
 
 TEST(add_and_discard)
 {
@@ -101,84 +103,33 @@ TEST(add_and_discard)
     delete jayson;
 }
 
-TEST(lead_card)
+TEST(lead_card_1)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
-    Player * rohan = Player_factory("Rohan", "Simple");
     const Card c("Ace", "Clubs");
-    const Card c2("Jack", "Spades");
-    const Card c3("Nine", "Hearts");
-    const Card c4("Queen", "Hearts");
-    const Card c5("Ten", "Diamonds");
-    
-    const Card c6("Ten", "Hearts");
-    const Card c7("Jack", "Hearts");
-    const Card c8("King", "Hearts");
-
-    string order_up_suit;
-
+    const Card c2("Queen", "Hearts");
+    const Card c3("Jack", "Hearts");
     jayson->add_card(c);
     jayson->add_card(c2);
     jayson->add_card(c3);
-    jayson->add_card(c4);
-    jayson->add_card(c5);
-
-    rohan->add_card(c3);
-    rohan->add_card(c4);
-    rohan->add_card(c6);
-    rohan->add_card(c7);
-    rohan->add_card(c8);
-
-    ASSERT_EQUAL(jayson->lead_card("Clubs"), c4);
-    ASSERT_EQUAL(jayson->lead_card("Hearts"), c);
-    ASSERT_EQUAL(jayson->lead_card("Spades"), c5);
-    ASSERT_EQUAL(jayson->lead_card("Clubs"), c3);
-    ASSERT_EQUAL(jayson->lead_card("Spades"), c2);
-
-    ASSERT_EQUAL(rohan->lead_card("Spades"), c8);
-    ASSERT_EQUAL(rohan->lead_card("Diamonds"), c4);
-    rohan->add_card(c4);
-    ASSERT_EQUAL(rohan->lead_card("Hearts"), c7);
-
-
+    ASSERT_EQUAL(jayson->lead_card("Clubs"), c2);
     delete jayson;
-    delete rohan;
 }
 
-TEST(lead_card_test_2)
+TEST(lead_card_2)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
-    Player * rohan = Player_factory("Rohan", "Simple");
-    const Card c("Jack", "Clubs");
-    const Card c2("Jack", "Spades");
-    const Card c3("Nine", "Hearts");
-    const Card c4("Queen", "Hearts");
-    const Card c5("Ten", "Diamonds");
-    
-    const Card c6("Ten", "Hearts");
-    const Card c7("Jack", "Hearts");
-    const Card c8("King", "Hearts");
-
-    string order_up_suit;
-
+    const Card c("Jack", "Hearts");
+    const Card c2("Ten", "Hearts");
     jayson->add_card(c);
     jayson->add_card(c2);
-    jayson->add_card(c3);
-    jayson->add_card(c4);
-    jayson->add_card(c5);
-
-    rohan->add_card(c3);
-    rohan->add_card(c4);
-    rohan->add_card(c6);
-    rohan->add_card(c7);
-    rohan->add_card(c8); 
-
-    ASSERT_EQUAL(jayson->lead_card("Spades"), c4);
-    ASSERT_EQUAL(rohan->lead_card("Clubs"), c8);
-
+    ASSERT_EQUAL(jayson->lead_card("Diamonds"), c2);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->lead_card("Hearts"), c);
+    ASSERT_EQUAL(jayson->lead_card("Clubs"), c2);
     delete jayson;
-    delete rohan;
 }
+
 
 TEST(play_card_1)
 {
@@ -201,20 +152,11 @@ TEST(play_card_2)
     jayson->add_card(c);
     jayson->add_card(c2);
     ASSERT_EQUAL(jayson->play_card(c3, "Spades"), c);
+    ASSERT_EQUAL(jayson->play_card(c3, "Spades"), c2);
     delete jayson;
 }
 
 TEST(play_card_3)
-{
-    Player * jayson = Player_factory("Jayson", "Simple");
-    const Card c("Nine", "Diamonds");
-    const Card c2("Ace", "Clubs");
-    jayson->add_card(c);
-    ASSERT_EQUAL(jayson->play_card(c2, "Spades"), c);
-    delete jayson;
-}
-
-TEST(play_card_4)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
     const Card c("Ace", "Clubs");
@@ -226,7 +168,7 @@ TEST(play_card_4)
     delete jayson;
 }
 
-TEST(play_card_5)
+TEST(play_card_4)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
     const Card c("Ace", "Clubs");
@@ -238,49 +180,59 @@ TEST(play_card_5)
     delete jayson;
 }
 
-//Submit to autograder without this one and see if you still get 14/17
-TEST(play_card)
+TEST(play_card_5)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
-    Player * rohan = Player_factory("Rohan", "Simple");
     const Card c("Ace", "Clubs");
-    const Card c2("Jack", "Spades");
-    const Card c3("Nine", "Hearts");
-    const Card c4("Queen", "Hearts");
-    const Card c5("Ten", "Diamonds");
-    
-    const Card c6("Ten", "Hearts");
-    const Card c7("Jack", "Hearts");
-    const Card c8("King", "Hearts");
+    const Card c2("Ten", "Spades");
+    const Card c3("Nine", "Spades");
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->play_card(c3, "Spades"), c2);
+    delete jayson;
+}
 
-    const Card c9("Nine", "Spades");
-    const Card c10("Nine", "Diamonds");
-    const Card c11("Ace", "Hearts");
-
-    string trump;
-
+TEST(play_card_6)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c("Nine", "Hearts");
+    const Card c2("Queen", "Hearts");
+    const Card c3("Jack", "Hearts");
+    const Card c4("Ten", "Hearts");
     jayson->add_card(c);
     jayson->add_card(c2);
     jayson->add_card(c3);
-    jayson->add_card(c4);
-    jayson->add_card(c5);
-
-    rohan->add_card(c3);
-    rohan->add_card(c4);
-    rohan->add_card(c6);
-    rohan->add_card(c7);
-    rohan->add_card(c8);
-
-    ASSERT_EQUAL(jayson->play_card(c9, "Spades"), c2);
-    ASSERT_EQUAL(jayson->play_card(c10, "Spades"), c5);
-    ASSERT_EQUAL(jayson->play_card(c6, "Spades"), c4);
-
-    ASSERT_EQUAL(rohan->play_card(c11, "Spades"), c8);
-    ASSERT_EQUAL(rohan->play_card(c11, "Hearts"), c7);
-    ASSERT_EQUAL(rohan->play_card(c9, "Clubs"), c3);
-
+    ASSERT_EQUAL(jayson->play_card(c4, "Spades"), c2);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->play_card(c4, "Hearts"), c3);
     delete jayson;
-    delete rohan;
+}
+
+TEST(play_card_7)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c ("Queen", "Hearts");
+    const Card c2 ("Jack", "Hearts");
+    const Card c3 ("Nine", "Clubs");
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->play_card(c3, "Spades"), c2);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->play_card(c3, "Hearts"), c);
+    jayson->add_card(c);
+    ASSERT_EQUAL(jayson->play_card(c3, "Diamonds"), c);
+    delete jayson;
+}
+
+TEST(operator_output)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    ostringstream output;
+    output << *jayson;
+    ostringstream correctOutput;
+    correctOutput << "Jayson";
+    ASSERT_EQUAL(output.str(), correctOutput.str());
+    delete jayson;
 }
 
 TEST_MAIN()

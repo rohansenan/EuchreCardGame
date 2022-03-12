@@ -125,7 +125,7 @@ class Simple : public Player
             return card;
         }
         if (allTrump)
-        {
+        {;
             Card card = hand[0];
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
@@ -145,15 +145,14 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit(trump)==trump && i!=hand.size())
+                while(i!=hand.size() && hand[i].get_suit(trump)==trump)
                 {
                     i+=1;
-                   
                 }
                 if(i==hand.size())
                 {
-                        hand.erase(hand.begin() + idx);
-                        return card;
+                    hand.erase(hand.begin() + idx);
+                    return card;
                 }
                 if(card<hand[i])
                 {

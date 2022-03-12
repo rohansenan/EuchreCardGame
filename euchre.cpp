@@ -261,7 +261,7 @@ public:
             if (players[i]->make_trump(upCard, is_dealer, round, trump))
             {
                 set_team_to_attack(players[i]);
-                cout << players[i]->get_name() << " orders up " << trump << endl;
+                cout << *players[i] << " orders up " << trump << endl;
                 if (round == 1)
                 {
                     players[dealerIndex]->add_and_discard(upCard);
@@ -270,7 +270,7 @@ public:
             }
             else
             {
-                cout << players[i]->get_name() << " passes" << endl;
+                cout << *players[i] << " passes" << endl;
             }
             j++;
         }
@@ -284,7 +284,7 @@ public:
             led_index = led_index % players.size();
         }
         Card led_card = players[led_index]->lead_card(trump);
-        cout << led_card << " led by " << players[led_index]->get_name() << endl;
+        cout << led_card << " led by " << *players[led_index] << endl;
         int j = 0;
         Card winner = led_card;
         int winner_index = led_index;
@@ -295,7 +295,7 @@ public:
                 i = i % players.size();
             }
             Card played_card = players[i]->play_card(led_card, trump);
-            cout << played_card << " played by " << players[i]->get_name() << endl;
+            cout << played_card << " played by " << *players[i] << endl;
             if (Card_less(winner, played_card, led_card, trump))
             {
                 winner = played_card;
@@ -303,7 +303,7 @@ public:
             }
             j++;
         }
-        cout << players[winner_index]->get_name() << " takes the trick" << endl;
+        cout << *players[winner_index] << " takes the trick" << endl;
         add_tricks_won(players[winner_index]);
         leader_index = winner_index;
     }
@@ -325,7 +325,7 @@ void play(Game &game, int &hand, string &shuffle_decision )
         }
         cout << "Hand " << hand << endl;
         int tricks = 0;
-        cout << game.get_player(game.get_dealer_index())->get_name() << " deals" 
+        cout << *game.get_player(game.get_dealer_index()) << " deals" 
             << endl;
         game.dealCards();
         cout << game.get_up_card() << " turned up" << endl;
@@ -350,20 +350,20 @@ void play(Game &game, int &hand, string &shuffle_decision )
 
         if (game.get_team1_tricks() > game.get_team2_tricks())
         {
-            cout << team1_players[0]->get_name() << " and " 
-            << team1_players[1]->get_name() << " win the hand" << endl;
+            cout << *team1_players[0] << " and " 
+            << *team1_players[1] << " win the hand" << endl;
         }
         else
         {
-            cout << team2_players[0]->get_name() << " and " 
-            << team2_players[1]->get_name() << " win the hand" << endl;
+            cout << *team2_players[0] << " and " 
+            << *team2_players[1] << " win the hand" << endl;
         }
         game.add_score_to_teams();
         int team1_score = game.get_team1_score();
         int team2_score = game.get_team2_score();
-        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        cout << *team1_players[0] << " and " << *team1_players[1]
         << " have " << team1_score << " points" << endl;
-        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        cout << *team2_players[0] << " and " << *team2_players[1]
         << " have " << team2_score << " points" << endl;
         cout << endl;
         game.nextDealer();
@@ -433,12 +433,12 @@ int main (int argc, char *argv[])
     }
     if (game.get_team1_score() >= max_points)
     {
-        cout << team1_players[0]->get_name() << " and " << team1_players[1]->get_name()
+        cout << *team1_players[0] << " and " << *team1_players[1]
         << " win!" << endl;
     }
     else
     {
-        cout << team2_players[0]->get_name() << " and " << team2_players[1]->get_name()
+        cout << *team2_players[0] << " and " << *team2_players[1]
         << " win!" << endl;
     }
     
