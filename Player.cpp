@@ -45,7 +45,7 @@ class Simple : public Player
         string nextSuit = Suit_next(upcardSuit);
         int upcardSuitCount = 0;
         int nextSuitCount = 0;
-        for (size_t i = 0; i < 5; i++)
+        for (size_t i = 0; i < hand.size(); i++)
         {
             if (hand.at(i).is_trump(upcardSuit) && hand.at(i).is_face())
             {
@@ -188,16 +188,15 @@ class Simple : public Player
             int idx = 0;
             for (size_t i = 1; i < hand.size(); i++)
             {
-                while(hand[i].get_suit(trump)!=led_card.get_suit(trump) 
-                && i!=hand.size())
+                while(i!=hand.size() && hand[i].get_suit(trump)
+                !=led_card.get_suit(trump))
                 {
                     i+=1;
-                   
                 }
                 if(i==hand.size())
                 {
-                        hand.erase(hand.begin() + idx);
-                        return card;
+                    hand.erase(hand.begin() + idx);
+                    return card;
                 }
                 if (card.get_suit(trump)!=led_card.get_suit(trump))
                 {
