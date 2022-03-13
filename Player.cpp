@@ -94,7 +94,7 @@ class Simple : public Player
     {
         hand.push_back(upcard);
         int i = 0; 
-        for (size_t j = 1; j <= 5; j++)
+        for (size_t j = 1; j <= hand.size() - 1; j++)
         {
             if (Card_less(hand.at(i), hand.at(j), upcard.get_suit()))
             {
