@@ -35,7 +35,6 @@ class Simple : public Player
     }
     void add_card(const Card &c) override
     {
-        //assert(hand.size() <= 5);
         hand.push_back(c);
     }
     bool make_trump(const Card &upcard, bool is_dealer,

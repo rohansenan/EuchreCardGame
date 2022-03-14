@@ -150,7 +150,7 @@ TEST(make_trump_bower_test)
     delete jayson;
 }
 
-TEST(add_and_discard)
+TEST(add_and_discard)    
 {
     Player * jayson = Player_factory("Jayson", "Simple");
     const Card c("Ace", "Clubs");
@@ -260,6 +260,31 @@ TEST(lead_card_2)
     delete jayson;
 }
 
+TEST(lead_card_3)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c("Jack", "Hearts");
+    const Card c2("Ten", "Diamonds");
+    const Card c3("Queen", "Hearts");
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    ASSERT_EQUAL(jayson->lead_card("Hearts"), c2);
+    delete jayson;
+}
+
+TEST(lead_card_4)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c("Queen", "Hearts");
+    const Card c2("Queen", "Diamonds");
+    const Card c3("Queeen", "Spades");
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    ASSERT_EQUAL(jayson->lead_card("clubs"), c2);
+    delete jayson;
+}
+
 TEST(play_card_1)
 {
     Player * jayson = Player_factory("Jayson", "Simple");
@@ -350,6 +375,20 @@ TEST(play_card_7)
     ASSERT_EQUAL(jayson->play_card(c3, "Hearts"), c);
     jayson->add_card(c);
     ASSERT_EQUAL(jayson->play_card(c3, "Diamonds"), c);
+    delete jayson;
+}
+
+TEST(play_card_8)
+{
+    Player * jayson = Player_factory("Jayson", "Simple");
+    const Card c("Queen", "Hearts");
+    const Card c2("Queen", "Diamonds");
+    const Card c3("Queeen", "Spades");
+    const Card c4("Ten", "Clubs");
+    jayson->add_card(c);
+    jayson->add_card(c2);
+    jayson->add_card(c3);
+    ASSERT_EQUAL(jayson->play_card(c4, "Clubs"), c3);
     delete jayson;
 }
 
