@@ -31,8 +31,9 @@ TEST(make_trump_basic_false_round_1)
     jayson->add_card(c3);
     jayson->add_card(c4);
     jayson->add_card(c5);
-    string order_up_suit;
+    string order_up_suit = "noSuit";
     ASSERT_FALSE(jayson->make_trump(c6, false, 1, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "noSuit");
     delete jayson;
 }
 
@@ -52,6 +53,7 @@ TEST(make_trump_basic_true_round_1)
     jayson->add_card(c5);
     string order_up_suit;
     ASSERT_TRUE(jayson->make_trump(c6, false, 1, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "Hearts");
     delete jayson;
 }
 
@@ -69,8 +71,9 @@ TEST(make_trump_basic_false_round_2)
     jayson->add_card(c3);
     jayson->add_card(c4);
     jayson->add_card(c5);
-    string order_up_suit;
+    string order_up_suit = "noSuit";
     ASSERT_FALSE(jayson->make_trump(c6, false, 2, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "noSuit");
     delete jayson;
 }
 
@@ -90,6 +93,7 @@ TEST(make_trump_basic_true_round_2)
     jayson->add_card(c5);
     string order_up_suit;
     ASSERT_TRUE(jayson->make_trump(c6, false, 2, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "Hearts");
     delete jayson;
 }
 
@@ -107,8 +111,9 @@ TEST(make_trump_is_dealer_round_1)
     jayson->add_card(c3);
     jayson->add_card(c4);
     jayson->add_card(c5);
-    string order_up_suit;
+    string order_up_suit = "noSuit";
     ASSERT_FALSE(jayson->make_trump(c6, true, 1, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "noSuit");
     delete jayson;
 }
 
@@ -128,6 +133,7 @@ TEST(make_trump_screw_the_dealer)
     jayson->add_card(c5);
     string order_up_suit;
     ASSERT_TRUE(jayson->make_trump(c6, true, 2, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "Diamonds");
     delete jayson;
 }
 
@@ -147,6 +153,7 @@ TEST(make_trump_bower_test)
     jayson->add_card(c4);
     jayson->add_card(c5);
     ASSERT_TRUE(jayson->make_trump(c6, false, 1, order_up_suit));
+    ASSERT_EQUAL(order_up_suit, "Clubs");
     delete jayson;
 }
 
@@ -169,13 +176,25 @@ TEST(add_and_discard)
     jayson->add_and_discard(c6);
 
     vector<Card> played;
-    played.push_back(jayson->lead_card("Clubs"));
-    ASSERT_TRUE(played.size() < 6);
+    for (size_t i = 0; i < 5; i++)
+    {
+        played.push_back(jayson->lead_card("Clubs"));
+    }
 
     for (size_t i = 0; i < played.size(); i++)
     {
         ASSERT_NOT_EQUAL(played.at(i), c3);
     }
+
+    bool is_there = false;
+    for (size_t i = 0; i < played.size(); i++)
+    {
+        if (played.at(i) == c6)
+        {
+            is_there = true;
+        }
+    }
+    ASSERT_TRUE(is_there);
 
     delete jayson;
 }
@@ -196,12 +215,23 @@ TEST(add_and_discard_equal_rank_case)
     jayson->add_card(c5);
     jayson->add_and_discard(c6);
     vector<Card> played;
-    played.push_back(jayson->lead_card("Clubs"));
-    ASSERT_TRUE(played.size() < 6);
+    for (size_t i = 0; i < 5; i++)
+    {
+        played.push_back(jayson->lead_card("Clubs"));
+    }
     for (size_t i = 0; i < played.size(); i++)
     {
         ASSERT_NOT_EQUAL(played.at(i), c2);
     }
+    bool is_there = false;
+    for (size_t i = 0; i < played.size(); i++)
+    {
+        if (played.at(i) == c6)
+        {
+            is_there = true;
+        }
+    }
+    ASSERT_TRUE(is_there);
     delete jayson;
 }
 
@@ -221,8 +251,10 @@ TEST(add_and_discard_upcard)
     jayson->add_card(c5);
     jayson->add_and_discard(c6);
     vector<Card> played;
-    played.push_back(jayson->lead_card("Clubs"));
-    ASSERT_TRUE(played.size() < 6);
+    for (size_t i = 0; i < 5; i++)
+    {
+        played.push_back(jayson->lead_card("Clubs"));
+    }
     for (size_t i = 0; i < played.size(); i++)
     {
         ASSERT_NOT_EQUAL(played.at(i), c6);
@@ -269,19 +301,6 @@ TEST(lead_card_3)
     jayson->add_card(c);
     jayson->add_card(c2);
     ASSERT_EQUAL(jayson->lead_card("Hearts"), c2);
-    delete jayson;
-}
-
-TEST(lead_card_4)
-{
-    Player * jayson = Player_factory("Jayson", "Simple");
-    const Card c("Queen", "Hearts");
-    const Card c2("Queen", "Diamonds");
-    const Card c3("Queeen", "Spades");
-    jayson->add_card(c);
-    jayson->add_card(c2);
-    jayson->add_card(c3);
-    ASSERT_EQUAL(jayson->lead_card("clubs"), c2);
     delete jayson;
 }
 
@@ -375,20 +394,6 @@ TEST(play_card_7)
     ASSERT_EQUAL(jayson->play_card(c3, "Hearts"), c);
     jayson->add_card(c);
     ASSERT_EQUAL(jayson->play_card(c3, "Diamonds"), c);
-    delete jayson;
-}
-
-TEST(play_card_8)
-{
-    Player * jayson = Player_factory("Jayson", "Simple");
-    const Card c("Queen", "Hearts");
-    const Card c2("Queen", "Diamonds");
-    const Card c3("Queeen", "Spades");
-    const Card c4("Ten", "Clubs");
-    jayson->add_card(c);
-    jayson->add_card(c2);
-    jayson->add_card(c3);
-    ASSERT_EQUAL(jayson->play_card(c4, "Clubs"), c3);
     delete jayson;
 }
 
